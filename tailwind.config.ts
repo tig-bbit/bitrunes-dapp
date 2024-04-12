@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+import plugin from 'tailwindcss/plugin'
 
 const config = {
 	darkMode: ["class"],
@@ -52,6 +53,13 @@ const config = {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))",
 				},
+
+				black: {
+					DEFAULT: '#000',
+					100: '#181d20',
+					60: '#a3a5a6',
+					40: '#747779',
+				}
 			},
 			borderRadius: {
 				lg: "var(--radius)",
@@ -72,9 +80,28 @@ const config = {
 				"accordion-down": "accordion-down 0.2s ease-out",
 				"accordion-up": "accordion-up 0.2s ease-out",
 			},
+			fontFamily: {
+				inter: ['var(--font-inter)'],
+				manrope: ['var(--font-manrope)'],
+			},
+			backgroundImage: {
+				'primary-gradient': 'var(--primary-gradient)'
+			},
+			boxShadow: {
+				'primary-norm': '0 0 1rem 0 rgba(241, 102, 23, 0.32)',
+				'primary-light': '0 0 1rem 0 rgba(241, 193, 23, 0.32)'
+			}
 		},
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		plugin(function ({ addVariant }) {
+			addVariant('hocus', ['&:hover', '&:focus'])
+			addVariant('filled', '&:not(:placeholder-shown)')
+		})
+	],
 } satisfies Config
+
+
 
 export default config
