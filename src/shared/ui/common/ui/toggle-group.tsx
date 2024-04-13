@@ -14,7 +14,8 @@ const toggleGroupVariants = cva([
 	variants: {
 		variant: {
 			solid: [
-				'bg-white/10 border border-white/10'
+				'bg-white/10 border border-secondary',
+				'light:bg-white/80'
 			]
 		},
 		size: {

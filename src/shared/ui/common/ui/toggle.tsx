@@ -16,7 +16,8 @@ const toggleVariants = cva([
 			solid: [
 				'text-black-40 border border-transparent',
 				'hover:bg-white/5 hover:text-white',
-				'data-[state=on]:bg-white/10 data-[state=on]:border-white/10 data-[state=on]:text-white'
+				'data-[state=on]:bg-white/10 data-[state=on]:border-secondary data-[state=on]:text-white',
+				'light:hover:text-black light:hover:bg-black/5 light:data-[state=on]:text-black light:data-[state=on]:bg-black/5'
 			]
 		},
 		size: {

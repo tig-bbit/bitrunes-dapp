@@ -39,18 +39,22 @@ export function BridgeForm() {
 							<RichInput
 								className='text-[1.5rem]'
 								topElement={<CurrencySelect />}
-								rightElement={<span className='text-black-40'>~0.00 USD</span>}
+								rightElement={
+									<span className='text-black-40 whitespace-nowrap'>
+										~0.00 USD
+									</span>
+								}
 								defaultValue='0.00'
 							/>
 						</FormControl>
 					</FormItem>
 
 					<div className='flex items-center gap-[1rem] w-full my-[1rem]'>
-						<hr className='border-white/10 grow' />
+						<hr className='border-secondary grow' />
 						<Button variant='outline' size='lg' className='rounded-full'>
 							<Icons.Switch className='size-[2rem]' />
 						</Button>
-						<hr className='border-white/10 grow' />
+						<hr className='border-secondary grow' />
 					</div>
 
 					<FormItem className='w-full'>
@@ -68,7 +72,11 @@ export function BridgeForm() {
 							<RichInput
 								className='text-[1.5rem]'
 								topElement={<CurrencySelect defaultValue='usdt' />}
-								rightElement={<span className='text-black-40'>~0.00 USD</span>}
+								rightElement={
+									<span className='text-black-40 whitespace-nowrap'>
+										~0.00 USD
+									</span>
+								}
 								defaultValue='0.00'
 							/>
 						</FormControl>

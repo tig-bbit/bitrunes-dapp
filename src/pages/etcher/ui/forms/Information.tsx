@@ -76,8 +76,9 @@ function FileUploader() {
 	return (
 		<div className={cn(
 			'flex flex-col items-center justify-center gap-[0.25rem] relative',
-			'size-[6.625rem] rounded-[1rem] border border-white/10 border-dashed text-black-40',
-			'hocus:bg-white/5'
+			'size-[6.625rem] rounded-[1rem] border border-secondary border-dashed text-black-40',
+			'hocus:bg-white/5',
+			'light:hocus:bg-black/5'
 		)}>
 			<Icons.UploadCloud className='size-[1.25rem]' />
 			<p className='w-min text-center'>Rune Image</p>

@@ -5,5 +5,6 @@ export * from './ui/rich-input';
 export * from './ui/label';
 export * from './ui/select';
 export * from './ui/dropdown-menu';
-export * from './ui/toggle'
-export * from './ui/toggle-group'
+export * from './ui/toggle';
+export * from './ui/toggle-group';
+export * from './ui/skeleton';

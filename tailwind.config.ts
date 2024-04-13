@@ -85,7 +85,8 @@ const config = {
 				manrope: ['var(--font-manrope)'],
 			},
 			backgroundImage: {
-				'primary-gradient': 'var(--primary-gradient)'
+				'primary-gradient': 'var(--primary-gradient)',
+				'white-gradient': 'var(--white-gradient)'
 			},
 			boxShadow: {
 				'primary-norm': '0 0 1rem 0 rgba(241, 102, 23, 0.32)',
@@ -93,6 +94,9 @@ const config = {
 			},
 			borderWidth: {
 				DEFAULT: '0.0625rem'
+			},
+			borderColor: {
+				secondary: 'var(--border-secondary)'
 			}
 		},
 	},
@@ -100,7 +104,8 @@ const config = {
 		require("tailwindcss-animate"),
 		plugin(function ({ addVariant }) {
 			addVariant('hocus', ['&:hover', '&:focus'])
-			addVariant('filled', '&:not(:placeholder-shown)')
+			addVariant('filled', '&:not(:placeholder-shown)'),
+			addVariant('light', '&:is(.light *)')
 		})
 	],
 } satisfies Config

@@ -9,9 +9,10 @@ export const inputVariants = cva([
 	variants: {
 		variant: {
 			solid: [
-				'text-white placeholder-black-40 bg-white/[.08] border border-white/[.08]',
+				'placeholder-black-40 bg-white/[.08] border border-secondary',
 				"hover:bg-white/[.12]",
 				"outline-[0.125rem] outline outline-transparent focus:outline-primary focus:bg-black-100",
+				'light:bg-white/80'
 			],
 		},
 		size: {
@@ -53,7 +54,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 			/>
 
 			<label className={'absolute top-0 h-full flex flex-col justify-center px-[1rem]\
-				pointer-events-none text-black-40 peer-focus:text-white transition-all'}
+				pointer-events-none text-black-40 peer-focus:text-white light:peer-focus:text-primary transition-all'}
 			>
 				{label}
 			</label>

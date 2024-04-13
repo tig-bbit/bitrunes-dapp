@@ -18,7 +18,7 @@ export function Stepper({ children, className, step }: StepperProps) {
 					} as CSSProperties)}
 
 					{index + 1 != childrenCount && (
-						<hr className='w-[5.25rem] border-white/10' />
+						<hr className='w-[5.25rem] border-secondary' />
 					)}
 				</>
 			))}
@@ -36,16 +36,16 @@ export function StepperStep({ className, label, children, ...props }: StepperSte
 			className={cn(
 				'flex items-center justify-center relative transition-all',
 				'font-manrope font-semibold text-[1.25rem]',
-				'border border-white/10',
-				'data-[passed]:bg-black-40',
-				'data-[active]:bg-primary data-[active]:shadow-primary-norm',
+				'border border-secondary',
+				'data-[passed]:bg-black-40 light:data-[passed]:bg-black/10',
+				'data-[active]:bg-primary data-[active]:shadow-primary-norm data-[active]:light:text-white',
 				'size-[2.625rem] rounded-full',
 				className
 			)}
 			{...props}
 		>
 			{children}
-			<div className='absolute -bottom-[2rem] capitalize text-[0.875rem] text-nowrap'>
+			<div className='absolute -bottom-[2rem] capitalize text-[0.875rem] text-nowrap light:text-black'>
 				{label}
 			</div>
 		</div>

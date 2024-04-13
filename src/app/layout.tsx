@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={cn(...fontVariables, 'bg-[#121212]')}>
+			<body className={cn(...fontVariables, 'bg-[#121212] light:bg-white-gradient')}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="dark"

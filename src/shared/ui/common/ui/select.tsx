@@ -22,7 +22,7 @@ const SelectTrigger = React.forwardRef<
 		className={cn(
 			"flex h-10 w-full items-center justify-between placeholder:text-muted-foreground [&>span]:line-clamp-1",
 			"outline-none",
-			"bg-white/10 text-white",
+			"bg-white/10 light:bg-black/10",
 			"rounded-[1rem] h-[1.8125rem] px-[0.375rem] py-[0.25rem]",
 			"disabled:cursor-not-allowed disabled:opacity-50",
 			"z-[51] relative",
@@ -90,7 +90,7 @@ const SelectContent = React.forwardRef<
 			className={cn(
 				"z-50 overflow-hidden rounded-[1rem] shadow-md",
 				"backdrop-blur-[3rem]",
-				"border border-white/10 bg-white/10",
+				"border border-secondary bg-white/10",
 				appearAnimation,
 				position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
 				className
@@ -141,10 +141,11 @@ const SelectItem = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"relative flex cursor-default select-none items-center rounded-[0.75rem] py-[0.25rem] px-[0.38rem] text-sm",
-			"outline-none transition-colors text-white",
+			"outline-none transition-colors cursor-pointer",
 			"hocus:bg-white/10",
 			"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 			"data-[state=checked]:[&]:bg-white/20",
+			"light:data-[state=checked]:[&]:bg-black/10 light:hocus:bg-black/5",
 			// "pl-8",
 			className
 		)}

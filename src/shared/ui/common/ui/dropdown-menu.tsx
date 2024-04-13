@@ -77,7 +77,7 @@ const DropdownMenuContent = React.forwardRef<
 			className={cn(
 				"z-50 min-w-[8rem] overflow-hidden rounded-[1rem] shadow-md",
 				"backdrop-blur-[3rem]",
-				"border border-white/10 bg-white/10",
+				"border border-secondary bg-white/10",
 				slideAnimation,
 				className
 			)}

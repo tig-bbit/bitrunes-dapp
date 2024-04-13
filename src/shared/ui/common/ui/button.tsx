@@ -17,15 +17,16 @@ const buttonVariants = cva([
 				'hocus:bg-gray-400 hocus:shadow-white'
 			],
 			outline: [
-				'border border-white/10 text-white',
-				'hocus:bg-white/5'
+				'border border-secondary',
+				'hocus:bg-white/5',
+				'light:hocus:bg-black/5'
 			],
 			dropdown: [
 				'z-[51] relative bg-white/10 text-white'
 			]
 		},
 		size: {
-			default: 'leading-auto py-[0.62rem] px-[1rem] rounded-[2.62rem]',
+			default: 'leading-auto py-[0.62rem] px-[1rem] rounded-[2.62rem] min-h-[2.625rem] min-w-[2.625rem] min-size',
 			lg: 'p-[1rem]'
 		},
 		colorPallete: {
@@ -47,7 +48,7 @@ const buttonVariants = cva([
 			colorPallete: 'primary',
 			class: [
 				"border-primary text-primary",
-				"hocus:bg-primary/5"
+				"hocus:bg-primary/5 light:hocus:bg-primary/10"
 			]
 		},
 		{
