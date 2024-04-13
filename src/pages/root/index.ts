@@ -1,0 +1,1 @@
+export { Page as PageRoot } from './ui/Page';

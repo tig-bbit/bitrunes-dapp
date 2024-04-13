@@ -90,6 +90,9 @@ const config = {
 			boxShadow: {
 				'primary-norm': '0 0 1rem 0 rgba(241, 102, 23, 0.32)',
 				'primary-light': '0 0 1rem 0 rgba(241, 193, 23, 0.32)'
+			},
+			borderWidth: {
+				DEFAULT: '0.0625rem'
 			}
 		},
 	},

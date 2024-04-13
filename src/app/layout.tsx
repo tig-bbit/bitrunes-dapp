@@ -4,6 +4,7 @@ import { fontInter } from "~/shared/assets/fonts/inter";
 import { cn } from "~/shared/lib/utils";
 import { fontManrope } from "~/shared/assets/fonts/manrope";
 import { ThemeProvider } from "./_theme";
+import { PageRoot } from "~/pages/root";
 
 export const metadata: Metadata = {
 	title: "BitRunes",
@@ -19,14 +20,16 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={cn(...fontVariables)}>
+			<body className={cn(...fontVariables, 'bg-[#121212]')}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="dark"
 					enableSystem
 					disableTransitionOnChange
 				>
-					{children}
+					<PageRoot>
+						{children}
+					</PageRoot>
 				</ThemeProvider>
 			</body>
 		</html>

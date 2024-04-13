@@ -1,0 +1,1 @@
+export { Page as PageBridge } from './ui/Page';

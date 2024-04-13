@@ -1,0 +1,1 @@
+export { PageBridge as default } from '~/pages/bridge';

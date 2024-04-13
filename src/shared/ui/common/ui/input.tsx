@@ -2,14 +2,14 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "~/shared/lib/utils"
 
-const inputVariants = cva([
-	'flex transition-all',
+export const inputVariants = cva([
+	'flex transition-all grow w-full',
 	"disabled:cursor-not-allowed disabled:opacity-50",
 ], {
 	variants: {
 		variant: {
 			solid: [
-				'text-white placeholder-black-40 bg-white/[.08] border-[0.0625rem] border-white/[.08]',
+				'text-white placeholder-black-40 bg-white/[.08] border border-white/[.08]',
 				"hover:bg-white/[.12]",
 				"outline-[0.125rem] outline outline-transparent focus:outline-primary focus:bg-black-100",
 			],
@@ -39,17 +39,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = "Input"
 
-interface NumberInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'type'> {
-	inputProps?: InputProps,
+interface NumberInputProps extends Omit<InputProps, 'type'> {
+	rootProps?: React.HTMLAttributes<HTMLDivElement>,
 	label: string
 }
 
 export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
-	({ inputProps, className, label, ...props }, ref) => (
-		<div {...props} className={cn('relative', className)}>
+	({ rootProps, className, label, ...props }, ref) => (
+		<div {...rootProps} className={cn('flex relative grow', rootProps?.className)}>
 			<Input
 				ref={ref} type='number'
-				{...inputProps} className={cn('text-end peer pl-[3rem]', inputProps?.className)}
+				{...props} className={cn('text-end peer pl-[3rem]', className)}
 			/>
 
 			<label className={'absolute top-0 h-full flex flex-col justify-center px-[1rem]\

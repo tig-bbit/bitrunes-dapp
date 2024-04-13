@@ -80,7 +80,7 @@ const FormItem = React.forwardRef<
 
 	return (
 		<FormItemContext.Provider value={{ id }}>
-			<div ref={ref} className={cn("space-y-2", className)} {...props} />
+			<div ref={ref} className={cn("flex gap-[1.1875rem]", className)} {...props} />
 		</FormItemContext.Provider>
 	)
 })
@@ -95,7 +95,11 @@ const FormLabel = React.forwardRef<
 	return (
 		<Label
 			ref={ref}
-			className={cn(error && "text-destructive", className)}
+			className={cn(
+				error && "text-destructive", 
+				"text-black-60 capitalize w-[7.5rem] py-[0.75rem] leading-[140%] shrink-0", 
+				className
+			)}
 			htmlFor={formItemId}
 			{...props}
 		/>
@@ -135,7 +139,7 @@ const FormDescription = React.forwardRef<
 		<p
 			ref={ref}
 			id={formDescriptionId}
-			className={cn("text-sm text-muted-foreground", className)}
+			className={cn("text-sm text-black-40", className)}
 			{...props}
 		/>
 	)
@@ -166,6 +170,17 @@ const FormMessage = React.forwardRef<
 })
 FormMessage.displayName = "FormMessage"
 
+const FormElementsGroup = React.forwardRef<
+	HTMLDivElement,
+	React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+
+	return (
+		<div ref={ref} className={cn("flex flex-col gap-[1rem] w-full", className)} {...props} />
+	)
+})
+FormElementsGroup.displayName = "FormElementsGroup"
+
 export {
 	useFormField,
 	Form,
@@ -175,4 +190,5 @@ export {
 	FormDescription,
 	FormMessage,
 	FormField,
+	FormElementsGroup
 }

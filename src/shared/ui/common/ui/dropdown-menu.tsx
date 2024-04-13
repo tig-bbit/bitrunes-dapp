@@ -77,7 +77,7 @@ const DropdownMenuContent = React.forwardRef<
 			className={cn(
 				"z-50 min-w-[8rem] overflow-hidden rounded-[1rem] shadow-md",
 				"backdrop-blur-[3rem]",
-				"border-[0.0625rem] border-white/10 bg-white/10",
+				"border border-white/10 bg-white/10",
 				slideAnimation,
 				className
 			)}
@@ -103,7 +103,7 @@ const DropdownMenuItem = React.forwardRef<
 	<DropdownMenuPrimitive.Item
 		ref={ref}
 		className={cn(
-			"relative flex cursor-default select-none items-center rounded-[0.75rem] py-[0.25rem] px-[0.38rem] text-sm ",
+			"relative flex cursor-default select-none items-center rounded-[0.75rem] py-[0.25rem] px-[0.38rem] text-sm",
 			"outline-none transition-colors text-white",
 			"hocus:bg-white/10",
 			"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",

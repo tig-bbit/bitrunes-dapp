@@ -11,6 +11,13 @@ import Sun from '../../assets/icons/sun.svg';
 import Switch from '../../assets/icons/switch.svg';
 import UploadCloud from '../../assets/icons/upload-cloud-02.svg';
 
+import CurrencyUsdt from '../../assets/icons/currency/usdt.svg';
+import CurrencyUsdc from '../../assets/icons/currency/usdc.svg';
+import CurrencyBtcb from '../../assets/icons/currency/btcb.svg';
+import CurrencyEth from '../../assets/icons/currency/eth.svg';
+import CurrencyBfg from '../../assets/icons/currency/bfg.svg';
+import CurrencyBond from '../../assets/icons/currency/bond.svg';
+
 export const Icons = {
 	ArrowNarrowLeft,
 	ArrowNarrowRight,
@@ -23,5 +30,11 @@ export const Icons = {
 	Settings,
 	Sun,
 	Switch,
-	UploadCloud
+	UploadCloud,
+	CurrencyUsdt,
+	CurrencyUsdc,
+	CurrencyBtcb,
+	CurrencyEth,
+	CurrencyBfg,
+	CurrencyBond
 }

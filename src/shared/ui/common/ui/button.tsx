@@ -13,11 +13,11 @@ const buttonVariants = cva([
 	variants: {
 		variant: {
 			solid: [
-				'bg-primary text-white shadow-primary-norm',
-				'hocus:bg-primary-gradient hocus:shadow-primary-light'
+				'bg-gray-500 text-white',
+				'hocus:bg-gray-400 hocus:shadow-white'
 			],
 			outline: [
-				'border-[0.0625rem] border-white/10 text-white',
+				'border border-white/10 text-white',
 				'hocus:bg-white/5'
 			],
 			dropdown: [
@@ -26,6 +26,7 @@ const buttonVariants = cva([
 		},
 		size: {
 			default: 'leading-auto py-[0.62rem] px-[1rem] rounded-[2.62rem]',
+			lg: 'p-[1rem]'
 		},
 		colorPallete: {
 			default: [],
