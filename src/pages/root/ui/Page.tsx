@@ -4,6 +4,7 @@ import { HeaderLogo } from "./HeaderLogo";
 import { cn } from "~/shared/lib/utils";
 import Link from "next/link";
 import { ColorModeToggler } from "./ColorModeToggler";
+import { ComingSoonModal } from "./ComingSoonModal";
 
 export function Page({ children }: PropsWithChildren) {
 	return (
@@ -39,6 +40,8 @@ export function Page({ children }: PropsWithChildren) {
 				}}
 			>
 				{children}
+
+				<ComingSoonModal />
 			</div>
 		</main>
 	);
