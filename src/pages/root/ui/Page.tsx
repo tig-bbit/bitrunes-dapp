@@ -23,7 +23,7 @@ export function Page({ children }: PropsWithChildren) {
 						asChild variant='solid'
 						colorPallete='primary'
 					>
-						<Link href='/etcher'>Buy $RUNES</Link>
+						<Link href='/etcher'>Buy $BRUNE</Link>
 					</Button>
 
 					<ColorModeToggler />
