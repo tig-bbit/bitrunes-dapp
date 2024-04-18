@@ -10,6 +10,7 @@ import {
 	ToggleGroupItem,
 	FormElementsGroup
 } from "~/shared/ui/common";
+import { NavButtonsFooter } from "../NavButtonsFooter";
 
 export function LimitRulesForm() {
 	const form = useForm()
@@ -17,11 +18,11 @@ export function LimitRulesForm() {
 	return (
 		<Form {...form}>
 			<div className='flex flex-col items-center gap-[3rem]'>
-				<h1 className='font-semibold text-[2rem]'>
+				<h1 className='font-semibold text-[2rem] text-center'>
 					Token Limits & Rules
 				</h1>
 
-				<div className='flex flex-col gap-[1rem] w-[30.875rem]'>
+				<div className='flex flex-col gap-[1rem]'>
 					<FormItem>
 						<FormLabel>Minting Cap</FormLabel>
 						<FormControl>
@@ -79,14 +80,14 @@ export function LimitRulesForm() {
 					</FormItem>
 				</div>
 
-				<div className='flex gap-[1rem]'>
+				<NavButtonsFooter>
 					<Button asChild variant='outline'>
 						<Link href='/etcher/configuration'>Go Back</Link>
 					</Button>
 					<Button asChild colorPallete='primary'>
 						<Link href='/etcher/summary'>Next Step</Link>
 					</Button>
-				</div>
+				</NavButtonsFooter>
 			</div>
 		</Form>
 	);

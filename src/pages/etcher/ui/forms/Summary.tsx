@@ -2,11 +2,12 @@ import Link from "next/link";
 import { Button } from "~/shared/ui/common";
 import { HTMLAttributes, ReactNode } from "react";
 import Image from "next/image";
+import { NavButtonsFooter } from "../NavButtonsFooter";
 
 export function SummaryForm() {
 	return (
 		<div className='flex flex-col items-center gap-[2.5rem]'>
-			<h1 className='font-semibold text-[2rem]'>
+			<h1 className='font-semibold text-[2rem] text-center'>
 				Summary
 			</h1>
 
@@ -53,14 +54,14 @@ export function SummaryForm() {
 				Currency: ETH
 			</Record>
 
-			<div className='flex gap-[1rem]'>
+			<NavButtonsFooter>
 				<Button asChild variant='outline'>
 					<Link href='/etcher/limits-rules'>Go Back</Link>
 				</Button>
 				<Button colorPallete='primary'>
 					Deploy
 				</Button>
-			</div>
+			</NavButtonsFooter>
 		</div>
 	);
 }

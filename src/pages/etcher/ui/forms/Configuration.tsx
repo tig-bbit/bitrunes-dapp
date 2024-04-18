@@ -10,6 +10,7 @@ import {
 	ToggleGroupItem,
 	FormElementsGroup
 } from "~/shared/ui/common";
+import { NavButtonsFooter } from "../NavButtonsFooter";
 
 export function ConfigurationForm() {
 	const form = useForm()
@@ -17,11 +18,11 @@ export function ConfigurationForm() {
 	return (
 		<Form {...form}>
 			<div className='flex flex-col items-center gap-[3rem]'>
-				<h1 className='font-semibold text-[2rem]'>
+				<h1 className='font-semibold text-[2rem] text-center'>
 					Premine Configuration
 				</h1>
 
-				<div className='flex flex-col gap-[1rem] w-[30.875rem]'>
+				<div className='flex flex-col gap-[1rem]'>
 					<FormItem>
 						<FormLabel>Total</FormLabel>
 						<FormControl>
@@ -79,21 +80,21 @@ export function ConfigurationForm() {
 							</FormControl>
 
 							<FormDescription>
-								Specify whether the minting process is open 
+								Specify whether the minting process is open
 								to all or restricted under certain conditions.
 							</FormDescription>
 						</FormElementsGroup>
 					</FormItem>
 				</div>
 
-				<div className='flex gap-[1rem]'>
+				<NavButtonsFooter>
 					<Button asChild variant='outline'>
 						<Link href='/etcher'>Go Back</Link>
 					</Button>
 					<Button asChild colorPallete='primary'>
 						<Link href='/etcher/limits-rules'>Next Step</Link>
 					</Button>
-				</div>
+				</NavButtonsFooter>
 			</div>
 		</Form>
 	);

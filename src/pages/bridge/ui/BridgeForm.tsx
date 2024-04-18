@@ -22,7 +22,7 @@ export function BridgeForm() {
 
 	return (
 		<Form {...form}>
-			<div className='flex flex-col items-center gap-[3rem] max-w-[30.875rem]'>
+			<div className='flex flex-col items-center gap-[3rem] max-w-[30.875rem] max-md:gap-[1.5rem]'>
 				<div className='flex flex-col items-center gap-[1rem]'>
 					<FormItem className='w-full'>
 						<FormLabel>From</FormLabel>
@@ -49,7 +49,7 @@ export function BridgeForm() {
 						</FormControl>
 					</FormItem>
 
-					<div className='flex items-center gap-[1rem] w-full my-[1rem]'>
+					<div className='flex items-center gap-[1rem] w-full my-[1rem] max-md:my-0'>
 						<hr className='border-secondary grow' />
 						<Button variant='outline' size='lg' className='rounded-full'>
 							<Icons.Switch className='size-[2rem]' />
@@ -101,7 +101,7 @@ export function BridgeForm() {
 					</FormItem>
 				</div>
 
-				<Button colorPallete='primary'>
+				<Button className='max-md:w-full' colorPallete='primary'>
 					Connect Wallet
 				</Button>
 			</div>

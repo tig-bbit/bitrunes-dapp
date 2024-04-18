@@ -10,9 +10,12 @@ export function Page({ step }: PageProps) {
 	const stepNumber = Object.keys(formComponents).findIndex(k => k == step) + 1;
 
 	return (
-		<div className='flex flex-col items-center gap-[5rem]'>
+		<div className='flex flex-col items-center gap-[3rem] w-full'>
 			<EtcherStepper step={stepNumber} />
-			<Component />
+
+			<div className='w-full max-w-[30.875rem]'>
+				<Component />
+			</div>
 		</div>
 	);
 }

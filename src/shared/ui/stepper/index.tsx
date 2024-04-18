@@ -1,4 +1,16 @@
-import { CSSProperties, Children, HTMLAttributes, ReactNode, cloneElement, isValidElement } from "react";
+'use client';
+
+import { 
+	CSSProperties, 
+	Children, 
+	HTMLAttributes, 
+	ReactNode, 
+	cloneElement, 
+	isValidElement, 
+	useEffect, 
+	useId 
+} from "react";
+
 import { cn } from "~/shared/lib/utils";
 
 export interface StepperProps extends HTMLAttributes<HTMLDivElement> {
@@ -7,12 +19,27 @@ export interface StepperProps extends HTMLAttributes<HTMLDivElement> {
 
 export function Stepper({ children, className, step }: StepperProps) {
 	const childrenCount = Children.count(children);
+	const stepperId = useId();
+
+	const getStepId = (step: number) => `${stepperId}-step-${step}`;
+	const currentStepId = getStepId(step);
+
+	useEffect(() => {
+		const stepEl = document.getElementById(currentStepId);
+		if(!stepEl)
+			return;
+
+		stepEl.scrollIntoView({
+			block: 'nearest', inline: 'center', behavior: 'smooth'
+		})
+	}, [stepperId, currentStepId])
 
 	return (
 		<div className={cn('flex items-center gap-[1.125rem]', className)}>
 			{Children.map(children, (child, index) => isValidElement(child) && (
 				<>
 					{cloneElement(child, {
+						id: getStepId(index + 1),
 						'data-active': step == index + 1 ? true : undefined,
 						'data-passed': index + 1 < step ? true : undefined
 					} as CSSProperties)}

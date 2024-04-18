@@ -80,7 +80,7 @@ const FormItem = React.forwardRef<
 
 	return (
 		<FormItemContext.Provider value={{ id }}>
-			<div ref={ref} className={cn("flex gap-[1.1875rem]", className)} {...props} />
+			<div ref={ref} className={cn("flex gap-[1.1875rem]  max-md:flex-col", className)} {...props} />
 		</FormItemContext.Provider>
 	)
 })
@@ -98,6 +98,7 @@ const FormLabel = React.forwardRef<
 			className={cn(
 				error && "text-destructive", 
 				"text-black-60 capitalize w-[7.5rem] py-[0.75rem] leading-[140%] shrink-0", 
+				"max-md:py-0",
 				className
 			)}
 			htmlFor={formItemId}

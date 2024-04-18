@@ -17,7 +17,7 @@ export const RichInput = forwardRef<HTMLInputElement, RichInputProps>(
 				<div className={cn('flex justify-between gap-2 items-end')}>
 					<input 
 						ref={ref} {...props}
-						className={cn('bg-transparent outline-none', className)}
+						className={cn('bg-transparent outline-none w-full', className)}
 					/>
 					{rightElement}
 				</div>

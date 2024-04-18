@@ -25,7 +25,7 @@ const SelectTrigger = React.forwardRef<
 			"bg-white/10 light:bg-black/10",
 			"rounded-[1rem] h-[1.8125rem] px-[0.375rem] py-[0.25rem]",
 			"disabled:cursor-not-allowed disabled:opacity-50",
-			"z-[51] relative",
+			"z-[1] relative",
 			className
 		)}
 		{...props}
@@ -88,7 +88,7 @@ const SelectContent = React.forwardRef<
 		<SelectPrimitive.Content
 			ref={ref}
 			className={cn(
-				"z-50 overflow-hidden rounded-[1rem] shadow-md",
+				"overflow-hidden rounded-[1rem] shadow-md",
 				"backdrop-blur-[3rem]",
 				"border border-secondary bg-white/10",
 				appearAnimation,

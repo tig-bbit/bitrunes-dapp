@@ -59,7 +59,9 @@ const config = {
 					100: '#181d20',
 					60: '#a3a5a6',
 					40: '#747779',
-				}
+				},
+
+				body: 'var(--body)'
 			},
 			borderRadius: {
 				lg: "var(--radius)",
@@ -97,6 +99,12 @@ const config = {
 			},
 			borderColor: {
 				secondary: 'var(--border-secondary)'
+			},
+			zIndex: {
+				header: '50',
+				dropdown: '60',
+				dialog: '70',
+				drawer: '70'
 			}
 		},
 	},
