@@ -11,6 +11,7 @@ import Sun from '../../assets/icons/sun.svg';
 import Switch from '../../assets/icons/switch.svg';
 import UploadCloud from '../../assets/icons/upload-cloud-02.svg';
 import Hint from '../../assets/icons/hint.svg';
+import Search2 from '../../assets/icons/search.svg';
 
 import CurrencyUsdt from '../../assets/icons/currency/usdt.svg';
 import CurrencyUsdc from '../../assets/icons/currency/usdc.svg';
@@ -38,5 +39,6 @@ export const Icons = {
 	CurrencyEth,
 	CurrencyBfg,
 	CurrencyBond,
-	Hint
+	Hint,
+	Search2
 }

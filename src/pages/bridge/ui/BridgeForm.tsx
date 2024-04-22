@@ -15,7 +15,7 @@ import {
 
 import { useForm } from "react-hook-form";
 import { Icons } from "~/shared/ui/icons";
-import { CurrencySelect } from "./CurrencySelect";
+import { CurrencySelectSmall } from "~/features/currency-select";
 
 export function BridgeForm() {
 	const form = useForm()
@@ -38,7 +38,7 @@ export function BridgeForm() {
 						<FormControl>
 							<RichInput
 								className='text-[1.5rem]'
-								topElement={<CurrencySelect />}
+								topElement={<CurrencySelectSmall />}
 								rightElement={
 									<span className='text-black-40 whitespace-nowrap'>
 										~0.00 USD
@@ -71,7 +71,7 @@ export function BridgeForm() {
 						<FormControl>
 							<RichInput
 								className='text-[1.5rem]'
-								topElement={<CurrencySelect defaultValue='usdt' />}
+								topElement={<CurrencySelectSmall defaultValue='usdt' />}
 								rightElement={
 									<span className='text-black-40 whitespace-nowrap'>
 										~0.00 USD

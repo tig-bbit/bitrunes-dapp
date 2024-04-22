@@ -14,10 +14,15 @@ export const inputVariants = cva([
 				"outline-[0.125rem] outline outline-transparent focus:outline-primary focus:bg-black-100",
 				'light:bg-white/80'
 			],
+			outline: [
+				'placeholder-black-40 border border-secondary',
+				"hover:bg-white/5",
+				"outline-[0.125rem] outline outline-transparent focus:outline-primary"
+			]
 		},
 		size: {
 			default: 'text-[0.94rem] py-[0.75rem] px-[1rem] rounded-[1rem]',
-			small: 'px-[0.75rem] py-[0.4063rem] rounded-[1rem]'
+			small: 'text-[0.9375rem] px-[0.75rem] py-[0.4063rem] rounded-[1rem]'
 		}
 	},
 	defaultVariants: {

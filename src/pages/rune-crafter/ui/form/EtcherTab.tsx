@@ -9,7 +9,7 @@ import { useState } from "react";
 export function EtcherTab() {
 	return (
 		<div className='flex flex-col gap-[1rem] w-full grow'>
-			<div className='flex gap-[1rem] w-full'>
+			<div className='flex gap-[1rem] w-full max-md:flex-col-reverse'>
 				<div className='flex flex-col gap-[1rem] w-full'>
 					<TextInput
 						label='Rune Name*' required
