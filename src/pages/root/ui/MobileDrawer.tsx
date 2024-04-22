@@ -54,14 +54,13 @@ export function MobileDrawer() {
 
 				<DrawerFooter>
 					<div className='flex flex-col gap-[0.75rem] '>
-						<div className='flex gap-[0.5rem]'>
-							<Button
-								className='w-full'
-								variant='outline' colorPallete='primary'
-							>
-								Connect BTC
-							</Button>
-						</div>
+						<Button
+							className='w-full'
+							variant='outline' colorPallete='primary'
+						>
+							Connect BTC
+						</Button>
+
 						<Button
 							asChild variant='solid'
 							colorPallete='primary'
