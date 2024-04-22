@@ -9,6 +9,7 @@ import {
 
 import { Icons } from "~/shared/ui/icons";
 import { ComponentPropsWithoutRef, useState } from "react";
+import { cn } from "~/shared/lib/utils";
 
 export const currencySelectVariants = new Map(
 	Object.entries({
@@ -39,16 +40,37 @@ export const currencySelectVariants = new Map(
 	})
 );
 
-function CurrencyLabel({ currency }: { currency: string; }) {
+export const currencySelectItems = Array.from(currencySelectVariants.entries())
+	.map(([type, currency]) => ({ type, ...currency }))
+
+interface CurrencyElement {
+	currency: string
+	className?: string,
+}
+
+export function CurrencyIcon({ className, currency }: CurrencyElement) {
 	const variant = currencySelectVariants.get(currency);
 
 	if (!variant)
 		return null;
 
+	return <variant.Icon className={cn('size-[1.25rem]', className)} />
+}
+
+export function CurrencyText({ className, currency }: CurrencyElement) {
+	const variant = currencySelectVariants.get(currency);
+
+	if (!variant)
+		return null;
+
+	return <span className={className}>{variant.text}</span>
+}
+
+export function CurrencyLabel({ currency, className }: CurrencyElement) {
 	return (
-		<div className='flex items-center gap-[0.375rem]'>
-			<variant.Icon className='size-[1.25rem]' />
-			<span>{variant.text}</span>
+		<div className={cn('flex items-center gap-[0.375rem]', className)}>
+			<CurrencyIcon currency={currency} />
+			<CurrencyText currency={currency} />
 		</div>
 	);
 }
@@ -59,9 +81,6 @@ interface CurrencySelectProps extends Omit<
 > {
 	defaultValue?: string
 }
-
-const currencySelectItems = Array.from(currencySelectVariants.entries())
-	.map(([type, currency]) => ({ type, ...currency }))
 
 export function CurrencySelectSmall({ defaultValue = 'btc', ...props }: CurrencySelectProps) {
 	const [currency, setCurrency] = useState(defaultValue);

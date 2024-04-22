@@ -32,7 +32,6 @@ export function MintTab() {
 				<TextInput
 					label='Rune Ticker*' required
 					placeholder='Enter rune ticker'
-					rightElement={<InputHint />}
 				/>
 
 				<TextInput

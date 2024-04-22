@@ -14,13 +14,13 @@ export function EtcherTab() {
 					<TextInput
 						label='Rune Name*' required
 						placeholder='Enter rune name'
-						rightElement={<InputHint />}
+						rightElement={<InputHint text='Names consist of letters A-Z and are between 13 & 28 characters long. They may contain spacers, represented as bullets • , to aid readability' />}
 					/>
 
 					<TextInput
 						label='Symbol'
 						placeholder='Enter symbol'
-						rightElement={<InputHint />}
+						rightElement={<InputHint text="The rune's currency symbol, as a single Unicode code point, for example $, or 🧿." />}
 					/>
 				</div>
 
@@ -33,20 +33,19 @@ export function EtcherTab() {
 			<TextInput
 				label='Destination Address*' required
 				placeholder='Enter destination address'
-				rightElement={<InputHint />}
+				rightElement={<InputHint text='The Bitcoin address to which the minted runes should be allocated.' />}
 			/>
 
 			<div className='flex gap-[1rem] w-full'>
 				<TextInput
 					label='Premine' type='number'
 					placeholder='Enter premine'
-					rightElement={<InputHint />}
 					defaultValue={0}
 				/>
 				<TextInput
 					label='Divisibility' type='number'
 					placeholder='Enter divisibility'
-					rightElement={<InputHint />}
+					rightElement={<InputHint text='A number representing the runes divisibility' />}
 					defaultValue={0}
 				/>
 			</div>
@@ -90,13 +89,11 @@ function MintOptions() {
 						<TextInput
 							label='Min Amount' type='number'
 							placeholder='Enter min amount'
-							rightElement={<InputHint />}
 							defaultValue={0}
 						/>
 						<TextInput
 							label='Mint Cap' type='number'
 							placeholder='Enter min cap'
-							rightElement={<InputHint />}
 							defaultValue={0}
 						/>
 					</div>
@@ -104,7 +101,6 @@ function MintOptions() {
 					<TextInput
 						label='Rune Inscription'
 						placeholder='Enter rune inscription'
-						rightElement={<InputHint />}
 					/>
 
 					<ToggleGroupRadio className='w-full' defaultValue='default'>

@@ -1,7 +1,7 @@
 import { Button, ToggleGroupItem, ToggleGroupRadio } from "~/shared/ui/common";
 import { FeeToggle } from "../inputs/FeeToggle";
 import { TextInput } from "../inputs/TextInput";
-import { CurrencySelectSmall } from "~/features/currency-select";
+import { RuneSelector } from "./RuneSelector";
 
 export function TransferTab() {
 	return (
@@ -32,7 +32,7 @@ export function TransferTab() {
 				</ToggleGroupRadio>
 
 				<TextInput
-					label='# of UTXOs to split amount into (equally)*' 
+					label='# of UTXOs to split amount into (equally)*'
 					required type='number'
 					placeholder='e.g. 2'
 					defaultValue={2}
@@ -46,10 +46,4 @@ export function TransferTab() {
 			</Button>
 		</div>
 	)
-}
-
-function RuneSelector() {
-	return (
-		null
-	);
 }
