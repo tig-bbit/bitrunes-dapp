@@ -6,7 +6,7 @@ import { LogoSvg } from "~/shared/ui/logo";
 
 export function HeaderLogo() {
 	const pathname = usePathname();
-	const pageName = pathname?.split('/')[1];
+	const pageName = pathname?.split('/')[1]?.replaceAll('-', ' ');
 
 	return (
 		<div className='flex items-center gap-[0.5rem]'>

@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { cn } from "~/shared/lib/utils";
 import { Button, Form, FormControl, FormItem, FormLabel, Input } from "~/shared/ui/common";
-import { Icons } from "~/shared/ui/icons";
 import { NavButtonsFooter } from "../NavButtonsFooter";
+import { ImageUploader } from "~/shared/ui/image-uploader";
 
 export function InformationForm() {
 	const form = useForm()
@@ -34,7 +33,7 @@ export function InformationForm() {
 								</FormControl>
 							</FormItem>
 						</div>
-						<FileUploader />
+						<ImageUploader label='Rune Image' />
 					</div>
 
 					<FormItem>
@@ -72,26 +71,5 @@ export function InformationForm() {
 				</NavButtonsFooter>
 			</div>
 		</Form>
-	);
-}
-
-function FileUploader() {
-	return (
-		<div className={cn(
-			'flex flex-col items-center justify-center gap-[0.25rem] relative',
-			'size-[6.625rem] rounded-[1rem] border border-secondary border-dashed text-black-40',
-			'hocus:bg-white/5',
-			'light:hocus:bg-black/5',
-			'max-md:size-[10rem] max-md:mx-auto'
-		)}>
-			<Icons.UploadCloud className='size-[1.25rem]' />
-			<p className='w-min text-center'>Rune Image</p>
-
-			<input
-				accept='image/*'
-				className='absolute size-full top-0 left-0 opacity-0 cursor-pointer'
-				type='file'
-			/>
-		</div>
 	);
 }

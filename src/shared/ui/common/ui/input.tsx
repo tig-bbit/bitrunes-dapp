@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "~/shared/lib/utils"
 
 export const inputVariants = cva([
-	'flex transition-all grow w-full',
+	'flex transition-all w-full',
 	"disabled:cursor-not-allowed disabled:opacity-50",
 ], {
 	variants: {
@@ -16,7 +16,8 @@ export const inputVariants = cva([
 			],
 		},
 		size: {
-			default: 'text-[0.94rem] py-[0.75rem] px-[1rem] rounded-[1rem]'
+			default: 'text-[0.94rem] py-[0.75rem] px-[1rem] rounded-[1rem]',
+			small: 'px-[0.75rem] py-[0.4063rem] rounded-[1rem]'
 		}
 	},
 	defaultVariants: {
