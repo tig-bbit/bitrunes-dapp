@@ -1,7 +1,11 @@
+'use client';
+
 import Image from "next/image";
 import { HTMLAttributes } from "react";
 import { cn } from "~/shared/lib/utils";
 import { Button, Progress } from "~/shared/ui/common";
+import { MintsPopover } from "./MintsPopover";
+import { ProgressPopover } from "./ProgressPopover";
 
 const columns = [
 	{
@@ -198,23 +202,15 @@ export function TableContent() {
 							<span>{row.name}</span>
 						</div>
 
-						<div
-							className='flex flex-col gap-[0.125rem]'
-							style={getColStyle(1)}
-						>
-							<Progress
-								className='h-[0.25rem]'
-								value={row.progress}
+						<div style={getColStyle(1)}>
+							<ProgressPopover 
+								progress={row.progress}
+								pending={row.pending} 
 							/>
-
-							<div className='flex justify-between w-full text-[0.75rem]'>
-								<span>{row.progress}%</span>
-								<span className='text-primary'>{row.pending} pending</span>
-							</div>
 						</div>
 
 						<div style={getColStyle(2)}>
-							{row.mints}
+							<MintsPopover mints={row.mints} />
 						</div>
 
 						<div style={getColStyle(3)}>
@@ -246,6 +242,7 @@ export function TableContent() {
 		</div>
 	);
 }
+
 function TableSortButton({ children, className, ...props }: HTMLAttributes<HTMLButtonElement>) {
 	return (
 		<button {...props} className={cn('h-full text-start', className)}>

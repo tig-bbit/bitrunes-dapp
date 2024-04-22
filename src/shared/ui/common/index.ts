@@ -12,3 +12,4 @@ export * from './ui/dialog';
 export * from './ui/drawer';
 export * from './ui/progress';
 export * from './ui/pagination';
+export * from './ui/popover';
