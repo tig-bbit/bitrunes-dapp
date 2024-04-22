@@ -11,7 +11,8 @@ export function RuneSelector() {
 	return (
 		<Select value={currency} onValueChange={setCurrency}>
 			<SelectTrigger className={cn(
-				'h-[3.375rem] py-[0.4063rem] pl-[0.75rem] pr-[1rem] border border-secondary'
+				'h-[3.375rem] py-[0.4063rem] pl-[0.75rem] pr-[1rem] border border-secondary',
+				'light:bg-transparent'
 			)}>
 				<div className='flex flex-col text-[0.9375rem]'>
 					<span className='text-[0.875rem] text-black-60'>
