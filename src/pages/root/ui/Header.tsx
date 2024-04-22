@@ -21,9 +21,6 @@ export function Header() {
 
 			<div className='flex gap-[0.75rem] max-md:hidden'>
 				<Button variant='outline' colorPallete='primary'>
-					Connect EVM
-				</Button>
-				<Button variant='outline' colorPallete='primary'>
 					Connect BTC
 				</Button>
 				<Button

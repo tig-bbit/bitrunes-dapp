@@ -59,12 +59,6 @@ export function MobileDrawer() {
 								className='w-full'
 								variant='outline' colorPallete='primary'
 							>
-								Connect EVM
-							</Button>
-							<Button
-								className='w-full'
-								variant='outline' colorPallete='primary'
-							>
 								Connect BTC
 							</Button>
 						</div>
