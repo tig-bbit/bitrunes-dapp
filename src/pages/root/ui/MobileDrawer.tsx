@@ -65,7 +65,7 @@ export function MobileDrawer() {
 							asChild variant='solid'
 							colorPallete='primary'
 						>
-							<Link href='/etcher'>Buy $BRUNE</Link>
+							<Link href='/rune-crafter'>Buy $BRUNE</Link>
 						</Button>
 
 						<ColorModeToggler>
