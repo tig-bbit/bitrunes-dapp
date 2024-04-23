@@ -8,27 +8,30 @@ import { useState } from "react";
 
 export function EtcherTab() {
 	const [runvalue, setRunValue] = useState('');
-	const HandleRune = (event : React.ChangeEvent<HTMLInputElement>) => {
+	const HandleRune = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
 		const regMatch = /^[a-zA-Z]*$/.test(value);
-	
+
 		if (regMatch)
 			setRunValue(value);
-	  };
+	};
 	return (
 		<div className='flex flex-col gap-[1rem] w-full grow'>
 			<div className='flex gap-[1rem] w-full max-md:flex-col-reverse'>
 				<div className='flex flex-col gap-[1rem] w-full'>
-					<TextInput
-						label='Rune Name*' required
-						maxLength={28}
-						minLength={13}
-						onChange={HandleRune}
-						placeholder='Enter rune name'
-						className="uppercase"
-						value={runvalue}
-						rightElement={<InputHint text='Names consist of letters A-Z and are between 13 & 28 characters long. They may contain spacers, represented as bullets • , to aid readability' />}
-					/>
+					<div className="relative">
+						<TextInput
+							label='Rune Name*' required
+							maxLength={28}
+							minLength={13}
+							onChange={HandleRune}
+							placeholder='Enter rune name'
+							className="uppercase"
+							value={runvalue}
+							rightElement={<InputHint text='Names consist of letters A-Z and are between 13 & 28 characters long. They may contain spacers, represented as bullets • , to aid readability' />}
+						/>
+
+					</div>
 
 					<TextInput
 						label='Symbol'
