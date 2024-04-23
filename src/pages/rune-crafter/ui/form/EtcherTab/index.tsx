@@ -2,11 +2,13 @@
 
 import { ImageUploader } from "~/shared/ui/image-uploader";
 import { InputHint } from "../../inputs/Hint";
-import { TextInput } from "../../inputs/TextInput";
+import { VTextInput } from "../../inputs/VTextInput";
 import { Button, ToggleGroupItem, ToggleGroupRadio } from "~/shared/ui/common";
 import { useState } from "react";
 import { useFormValidation } from "./validation";
 import { FormProvider } from "react-hook-form";
+import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
+import { useFieldValue } from "~/shared/lib/useFieldValue";
 
 export function EtcherTab() {
 	const methods = useFormValidation();
@@ -17,10 +19,13 @@ export function EtcherTab() {
 
 	return (
 		<FormProvider {...methods}>
-			<form className='flex flex-col gap-[1rem] w-full grow' onSubmit={onSubmit}>
+			<form
+				className='flex flex-col gap-[1rem] w-full grow'
+				onSubmit={onSubmit}
+			>
 				<div className='flex gap-[1rem] w-full max-md:flex-col-reverse'>
 					<div className='flex flex-col gap-[1rem] w-full'>
-						<TextInput
+						<VTextInput
 							name='runeName'
 							label='Rune Name*'
 							placeholder='Enter rune name'
@@ -28,11 +33,9 @@ export function EtcherTab() {
 							rightElement={<InputHint text='Names consist of letters A-Z and are between 13 & 28 characters long. They may contain spacers, represented as bullets • , to aid readability' />}
 						/>
 
-						<TextInput
+						<VTextInput
 							name='runeSymbol'
-							label='Symbol'
-							maxLength={1}
-							placeholder='Enter symbol'
+							label='Symbol' placeholder='Enter symbol'
 							rightElement={<InputHint text="The rune's currency symbol, as a single Unicode code point, for example $, or 🧿." />}
 						/>
 					</div>
@@ -43,7 +46,7 @@ export function EtcherTab() {
 					/>
 				</div>
 
-				<TextInput
+				<VTextInput
 					name='destAddress'
 					label='Destination Address*'
 					placeholder='Enter destination address'
@@ -52,12 +55,11 @@ export function EtcherTab() {
 
 				<div className='flex gap-[1rem] w-full'>
 
-					<TextInput
+					<VTextInput
 						name='divisibility'
 						label='Divisibility' type='number'
 						placeholder='Enter divisibility'
 						rightElement={<InputHint text='A number representing the runes divisibility' />}
-						defaultValue={0}
 					/>
 				</div>
 
@@ -79,13 +81,12 @@ export function EtcherTab() {
 }
 
 function MintOptions() {
-	const [tab, setTab] = useState('open');
+	const tab = useFieldValue({ name: 'mintType' })
 
 	return (
 		<div className='flex flex-col gap-[1rem] w-full'>
-			<ToggleGroupRadio
-				className='w-full'
-				value={tab} onValueChange={setTab}
+			<VToggleGroupRadio
+				name='mintType' className='w-full'
 			>
 				<ToggleGroupItem value='open'>
 					Open Mint
@@ -93,29 +94,26 @@ function MintOptions() {
 				<ToggleGroupItem value='closed'>
 					Closed Mint
 				</ToggleGroupItem>
-			</ToggleGroupRadio>
+			</VToggleGroupRadio>
 
 			{tab == 'open' && (
 				<>
-					<TextInput
+					<VTextInput
 						name='premine'
 						label='Premine' type='number'
 						placeholder='Enter premine'
-						defaultValue={0}
 					/>
-					
+
 					<div className='flex gap-[1rem] w-full'>
-						<TextInput
+						<VTextInput
 							name='mintAmount'
 							label='Mint Amount' type='number'
 							placeholder='Enter mint amount'
-							defaultValue={0}
 						/>
-						<TextInput
+						<VTextInput
 							name='mintCap'
 							label='Mint Cap' type='number'
 							placeholder='Enter min cap'
-							defaultValue={0}
 						/>
 					</div>
 

@@ -1,11 +1,26 @@
 'use client';
 
-import { ToggleGroupRadio, ToggleGroupItem } from "~/shared/ui/common";
-import { TextInput } from "./TextInput";
-import { useState } from "react";
+import { ToggleGroupItem } from "~/shared/ui/common";
+import { VTextInput } from "./VTextInput";
+import { z } from "zod";
+import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
+import { useFieldValue } from "~/shared/lib/useFieldValue";
 
-export function FeeToggle() {
-	const [tab, setTab] = useState('medium');
+export const schemaFeeToggle = z.union([
+	z.object({
+		type: z.enum(['slow', 'medium', 'fast']).default('medium')
+	}),
+	z.object({
+		type: z.literal('custom'),
+		custom: z.coerce.number().optional()
+	})
+])
+
+export function FeeToggle({ name }: { name: string }) {
+	const typeFieldName = `${name}.type`;
+	const customFieldName = `${name}.custom`;
+
+	const tab = useFieldValue({ name: typeFieldName });
 
 	return (
 		<>
@@ -14,20 +29,18 @@ export function FeeToggle() {
 					Select Fees (135 sats/vB)
 				</span>
 
-				<ToggleGroupRadio
-					className='w-full'
-					value={tab} onValueChange={setTab}
-				>
+				<VToggleGroupRadio name={typeFieldName} className='w-full'>
 					<ToggleGroupItem value='slow'>Slow</ToggleGroupItem>
 					<ToggleGroupItem value='medium'>Medium</ToggleGroupItem>
 					<ToggleGroupItem value='fast'>Fast</ToggleGroupItem>
 					<ToggleGroupItem value='custom'>Custom</ToggleGroupItem>
-				</ToggleGroupRadio>
+				</VToggleGroupRadio>
 			</div>
 
 			{tab == 'custom' && (
-				<TextInput
-					label='Custom Fee Rate*' required
+				<VTextInput
+					name={customFieldName}
+					label='Custom Fee Rate*'
 					placeholder='e.g. 125'
 				/>
 			)}

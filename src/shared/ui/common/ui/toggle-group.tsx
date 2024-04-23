@@ -64,13 +64,14 @@ const ToggleGroup = React.forwardRef<
 
 ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName
 
-type ToggleGroupRadioProps =
-	ToggleGroupPrimitive.ToggleGroupSingleProps & React.RefAttributes<HTMLDivElement>
-	& VariantProps<typeof toggleVariants>
+export type ToggleGroupRadioProps = Omit<
+	ToggleGroupPrimitive.ToggleGroupSingleProps & React.RefAttributes<HTMLDivElement> & VariantProps<typeof toggleVariants>,
+	'type'
+>
 
 const ToggleGroupRadio = React.forwardRef<
 	React.ElementRef<typeof ToggleGroupPrimitive.Root>,
-	Omit<ToggleGroupRadioProps, 'type'>
+	ToggleGroupRadioProps
 >(({ defaultValue, ...props }, ref) => {
 	const [value, setValue] = useControllableState({
 		value: props.value, defaultValue,

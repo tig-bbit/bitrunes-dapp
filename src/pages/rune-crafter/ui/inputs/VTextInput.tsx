@@ -4,12 +4,12 @@ import { useMergeRefs } from "~/shared/lib/useMergeRefs";
 import { cn } from "~/shared/lib/utils";
 import { RichInput, RichInputProps } from "~/shared/ui/common";
 
-interface TextInputProps extends Omit<RichInputProps, 'topElement' | 'name'> {
+interface VTextInputProps extends Omit<RichInputProps, 'topElement' | 'name'> {
 	label: string,
 	name: string
 }
 
-export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ label, className, name, ...props }, ref) => {
+export const VTextInput = forwardRef<HTMLInputElement, VTextInputProps>(({ label, className, name, ...props }, ref) => {
 	const {
 		field: { ref: refField, ...field },
 		fieldState: { error }
@@ -40,4 +40,4 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ label, 
 	)
 });
 
-TextInput.displayName = 'TextInput'
+VTextInput.displayName = 'TextInput'
