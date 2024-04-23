@@ -21,13 +21,18 @@ const buttonVariants = cva([
 				'hocus:bg-white/5',
 				'light:hocus:bg-black/5'
 			],
+			ghost: [
+
+			],
 			dropdown: [
 				'z-dropdown relative bg-white/10 text-white'
 			]
 		},
 		size: {
+			sm: 'px-[0.5rem] py-[0.125rem] text-[0.75rem]/[1.4] rounded-full',
 			default: 'leading-auto py-[0.62rem] px-[1rem] rounded-[2.62rem] min-h-[2.625rem] min-w-[2.625rem] min-size',
-			lg: 'p-[1rem]'
+			lg: 'p-[1rem]',
+			icon: 'size-[2rem]'
 		},
 		colorPallete: {
 			default: [],

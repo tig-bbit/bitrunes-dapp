@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
 import "./globals.css";
+
+import type { Metadata } from "next";
 import { fontInter } from "~/shared/assets/fonts/inter";
 import { cn } from "~/shared/lib/utils";
 import { fontManrope } from "~/shared/assets/fonts/manrope";
@@ -20,7 +21,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={cn(...fontVariables, 'bg-body light:bg-white-gradient')}>
+			<body
+				className={cn(...fontVariables, 'bg-body light:bg-white-gradient')}
+				style={{
+					backgroundImage: 'radial-gradient(rgb(189 189 189 / 4%) -25%, rgba(255, 255, 255, 0))'
+				}}
+			>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="dark"

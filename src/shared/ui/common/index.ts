@@ -10,3 +10,6 @@ export * from './ui/toggle-group';
 export * from './ui/skeleton';
 export * from './ui/dialog';
 export * from './ui/drawer';
+export * from './ui/progress';
+export * from './ui/pagination';
+export * from './ui/popover';
