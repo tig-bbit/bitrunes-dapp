@@ -30,7 +30,7 @@ const Progress = React.forwardRef<
 				.map((entry, index, arr) => (
 					<ProgressPrimitive.Indicator
 						key={index}
-						className="absolute h-full w-full flex-1 transition-all rounded-full"
+						className="absolute h-full w-full flex-1 transition-all"
 						style={{
 							transform: `translateX(-${100 - (entry.progress || 0)}%)`,
 							background: entry.color

@@ -61,7 +61,8 @@ const config = {
 					40: '#747779',
 				},
 
-				body: 'var(--body)'
+				body: 'var(--body)',
+				error: 'hsl(var(--error))'
 			},
 			borderRadius: {
 				lg: "var(--radius)",
@@ -91,8 +92,9 @@ const config = {
 				'white-gradient': 'var(--white-gradient)'
 			},
 			boxShadow: {
+				'error-default': '0 0 1rem 0 rgba(195, 63, 56, 0.32)',
 				'primary-norm': '0 0 1rem 0 rgba(241, 102, 23, 0.32)',
-				'primary-light': '0 0 1rem 0 rgba(241, 193, 23, 0.32)'
+				'primary-light': '0 0 1rem 0 rgba(241, 193, 23, 0.32)',
 			},
 			borderWidth: {
 				DEFAULT: '0.0625rem'
