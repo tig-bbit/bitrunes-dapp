@@ -5,11 +5,12 @@ import { cn } from "~/shared/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger, Progress } from "~/shared/ui/common";
 
 interface ProgressInfo {
+	block : number,
 	progress: number,
 	pending: number
 }
 
-export function ProgressPopover({ progress, pending }: ProgressInfo) {
+export function ProgressPopover({ block, progress, pending }: ProgressInfo) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -32,52 +33,35 @@ export function ProgressPopover({ progress, pending }: ProgressInfo) {
 
 					<div className='flex justify-between w-full text-[0.75rem]'>
 						<span>{progress}%</span>
-						<span className='text-primary'>{pending} pending</span>
+						<span className='text-primary'>{pending / 10000000}M pending</span>
 					</div>
 				</div>
 			</PopoverTrigger>
 			<PopoverContent className='flex flex-col gap-[0.75rem] text-[0.875rem]'>
-				<div className='flex gap-[0.75rem] w-full'>
-					<div className='flex flex-col gap-[0.25rem] w-full'>
-						<h3>Blocks</h3>
-
-						<div className='flex justify-between w-full text-black-60'>
-							<span>1 block:</span>
-							<span>0</span>
-						</div>
-						<div className='flex justify-between w-full text-black-60'>
-							<span>3 block:</span>
-							<span>0</span>
-						</div>
-						<div className='flex justify-between w-full text-black-60'>
-							<span>10 block:</span>
-							<span>26881</span>
-						</div>
-					</div>
-
-					<div className='flex flex-col gap-[0.25rem] w-full'>
-						<h3>Days</h3>
-
-						<div className='flex justify-between w-full text-black-60'>
-							<span>1 day:</span>
-							<span>100001</span>
-						</div>
-						<div className='flex justify-between w-full text-black-60'>
-							<span>3 days:</span>
-							<span>100001</span>
-						</div>
-						<div className='flex justify-between w-full text-black-60'>
-							<span>7 days:</span>
-							<span>100001</span>
-						</div>
-					</div>
-				</div>
+				<p className='text-black-40'>
+					Mint ends in {block} blocks (1,050,000)
+				</p>
 
 				<hr className='border-white/10' />
 
-				<p className='text-black-40'>
-					All time 100,001
-				</p>
+				<div className='flex gap-[0.75rem] w-full'>
+					<div className='flex flex-col gap-[0.25rem] w-full'>
+						<h3>Status</h3>
+						<p className='text-black-60'>
+							{pending} {progress} (Calculating)
+						</p>
+					</div>
+
+					<div className='flex flex-col gap-[0.25rem] w-full'>
+						<h3>Mints</h3>
+						<p className='text-black-60'>
+							62,951 confirmed
+						</p>
+						<p className='text-primary'>
+							3,139 pending
+						</p>
+					</div>
+				</div>
 			</PopoverContent>
 		</Popover>
 	);
