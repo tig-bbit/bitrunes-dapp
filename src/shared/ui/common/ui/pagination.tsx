@@ -48,7 +48,7 @@ const PaginationLink = ({
 		size={size}
 		variant={isActive ? 'solid' : 'outline'}
 		colorPallete={isActive ? 'primary' : undefined}
-		className={cn('rounded-full', className)}
+		className={cn('rounded-full font-mono', className)}
 		{...props}
 	/>
 )
