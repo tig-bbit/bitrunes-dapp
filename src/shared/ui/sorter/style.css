@@ -1,0 +1,16 @@
+@layer tailwind;
+
+.sorter-button.asc, .sorter-button.desc {
+	@apply text-primary
+}
+
+.sorter-button path {
+	transition: all 200ms;
+}
+
+.sorter-button.asc path.left {
+	@apply text-primary
+}
+.sorter-button.desc path.right {
+	@apply text-primary
+}

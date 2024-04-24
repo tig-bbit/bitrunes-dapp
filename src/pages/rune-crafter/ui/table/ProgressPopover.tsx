@@ -5,12 +5,12 @@ import { cn } from "~/shared/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger, Progress } from "~/shared/ui/common";
 
 interface ProgressInfo {
-	block : number,
 	progress: number,
-	pending: number
+	block? : number,
+	pending?: number
 }
 
-export function ProgressPopover({ block, progress, pending }: ProgressInfo) {
+export function ProgressPopover({ block = 0, progress, pending }: ProgressInfo) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -32,8 +32,11 @@ export function ProgressPopover({ block, progress, pending }: ProgressInfo) {
 					/>
 
 					<div className='flex justify-between w-full text-[0.75rem]'>
-						<span>{progress}%</span>
-						<span className='text-primary'>{pending / 10000000}M pending</span>
+						<span>{progress.toFixed(2)}%</span>
+
+						{typeof pending !== 'undefined' && (
+							<span className='text-primary'>{pending / 10000000}M pending</span>
+						)}
 					</div>
 				</div>
 			</PopoverTrigger>

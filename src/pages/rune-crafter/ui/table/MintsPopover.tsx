@@ -4,28 +4,25 @@ import { useState } from "react";
 import { cn } from "~/shared/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/common";
 
-interface History {
-	[key : string] : number;
-}
 interface DataProps {
-	mints : number;
-	history : History;
+	mints: number;
+	history: Record<string, number>;
 }
 
-export function MintsPopover(props : DataProps) {
+export function MintsPopover(props: DataProps) {
 	const [open, setOpen] = useState(false);
-	const {mints, history} = props;
+	const { mints, history = {} } = props;
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger
 				onPointerEnter={() => setOpen(true)}
 				onPointerLeave={() => setOpen(false)}
-				className={cn('px-[0.5rem] py-[0.25rem] rounded-[0.25rem]', open && 'bg-white/[.08]')}
+				className={cn('px-[0.5rem] py-[0.25rem] rounded-[0.25rem] w-full text-start', open && 'bg-white/[.08]')}
 			>
-				{mints}
+				{mints > 1e7 ? 'Unlimited' : mints}
 			</PopoverTrigger>
-			
+
 			<PopoverContent className='flex flex-col gap-[0.75rem] text-[0.875rem]'>
 				<div className='flex gap-[0.75rem] w-full'>
 					<div className='flex flex-col gap-[0.25rem] w-full'>
