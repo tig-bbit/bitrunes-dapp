@@ -23,6 +23,7 @@ export function useFormValidation() {
 		resolver: zodResolver(schema),
 		mode: 'onChange',
 		defaultValues: {
+			runeName: '',
 			divisibility: 0,
 			premine: 0,
 			mintType: 'open',

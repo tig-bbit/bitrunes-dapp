@@ -9,9 +9,11 @@ interface VTextInputProps extends Omit<RichInputProps, 'topElement' | 'name'> {
 	name: string
 }
 
-export const VTextInput = forwardRef<HTMLInputElement, VTextInputProps>(({ label, className, name, ...props }, ref) => {
+export const VTextInput = forwardRef<HTMLInputElement, VTextInputProps>(({
+	label, className, name, ...props }, ref
+) => {
 	const {
-		field: { ref: refField, ...field },
+		field: { ref: refField, onChange, ...field },
 		fieldState: { error }
 	} = useController({ name });
 
@@ -21,13 +23,17 @@ export const VTextInput = forwardRef<HTMLInputElement, VTextInputProps>(({ label
 		<RichInput
 			ref={refs} {...props} size='small'
 			{...field}
+			onChange={e => {
+				onChange(e);
+				props?.onChange?.(e);
+			}}
 			className={cn(
 				'text-[0.9375rem]/none',
 				className
 			)}
 			rootProps={{
 				className: cn(
-					'items-center', 
+					'items-center',
 					error && 'border-error shadow-error-default [&:has(input:focus)]:bg-black-100'
 				)
 			}}

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import Image from "next/image";
 import { HTMLAttributes } from "react";
 import { cn } from "~/shared/lib/utils";
 import { Button, Progress } from "~/shared/ui/common";
@@ -18,6 +17,7 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "~/shared/ui/common"
+import { getSorterComponents } from "~/shared/ui/sorter";
 
 const columns = [
 	{
@@ -55,8 +55,9 @@ const columns = [
 		type: 'mint-button',
 		width: '2.875rem'
 	},
-];
+] as const;
 
+type ColumnType = typeof columns[number]['type'];
 
 const ITEMS_PER_PAGE = 10;
 
@@ -89,11 +90,11 @@ export function TableContent() {
 		// Initial fetch
 		fetchData();
 
-		// Fetch data every 5 seconds
-		const intervalId = setInterval(fetchData, 5000);
+		// // Fetch data every 5 seconds
+		// const intervalId = setInterval(fetchData, 5000);
 
-		// Cleanup function to clear the interval when component unmounts
-		return () => clearInterval(intervalId);
+		// // Cleanup function to clear the interval when component unmounts
+		// return () => clearInterval(intervalId);
 	}, []);
 
 	const NextPage = () => {
@@ -118,20 +119,30 @@ export function TableContent() {
 	if (!runData) {
 		return <div>Loading...</div>; // Or any other loading state
 	}
+
+	const { Sorter } = getSorterComponents<ColumnType>();
+
 	return (
 		<div
 			className='flex flex-col gap-[1.5rem] text-black-60 light:text-black/80'
 			style={{ width: 'max(100%, 53rem)' }}
 		>
 			<nav className='flex px-[0.75rem] py-[0.625rem] rounded-[0.875rem] border border-secondary'>
-				{columns.map((col, index) => (
-					<TableSortButton
-						key={col.type}
-						style={getColStyle(index)}
-					>
-						{col.label}
-					</TableSortButton>
-				))}
+				<Sorter>
+					{columns.map((col, index) => (
+						col.type == 'mint-button' ? (
+							<div key={col.type} style={getColStyle(index)} />
+						) : (
+							<TableSortButton
+								key={col.type}
+								field={col.type}
+								style={getColStyle(index)}
+							>
+								{col.label}
+							</TableSortButton>
+						)
+					))}
+				</Sorter>
 			</nav>
 
 			<div className='shrink-0'>
@@ -198,25 +209,25 @@ export function TableContent() {
 
 					<div className='flex gap-[0.5rem]'>
 						<PaginationItem>
-							{currentPage == 1 ? 
-							<PaginationLink onClick={PreviewPage} isActive href="#">
-								{currentPage - 1 === 0 ? currentPage : currentPage - 1}
-							</PaginationLink> 
-							: 
-							<PaginationLink onClick={PreviewPage} href="#">
-								{currentPage - 1 === 0 ? currentPage : currentPage - 1}
-							</PaginationLink>
-}
+							{currentPage == 1 ?
+								<PaginationLink onClick={PreviewPage} isActive href="#">
+									{currentPage - 1 === 0 ? currentPage : currentPage - 1}
+								</PaginationLink>
+								:
+								<PaginationLink onClick={PreviewPage} href="#">
+									{currentPage - 1 === 0 ? currentPage : currentPage - 1}
+								</PaginationLink>
+							}
 						</PaginationItem>
 						<PaginationItem>
-						{currentPage == 1 ? 
-							<PaginationLink onClick={twoPage} href="#">
-								{currentPage - 1 === 0 ? currentPage + 1 : currentPage}
-							</PaginationLink> 
-							: 
-							<PaginationLink isActive href="#">
-								{currentPage - 1 === 0 ? currentPage + 1 : currentPage}
-							</PaginationLink>}
+							{currentPage == 1 ?
+								<PaginationLink onClick={twoPage} href="#">
+									{currentPage - 1 === 0 ? currentPage + 1 : currentPage}
+								</PaginationLink>
+								:
+								<PaginationLink isActive href="#">
+									{currentPage - 1 === 0 ? currentPage + 1 : currentPage}
+								</PaginationLink>}
 						</PaginationItem>
 						<PaginationItem>
 							<PaginationLink onClick={NextPage}>
@@ -234,10 +245,19 @@ export function TableContent() {
 	);
 }
 
-function TableSortButton({ children, className, ...props }: HTMLAttributes<HTMLButtonElement>) {
+interface TableSortButtonProps extends HTMLAttributes<HTMLButtonElement> {
+	field: ColumnType
+}
+
+function TableSortButton({ children, className, field, ...props }: TableSortButtonProps) {
+	const { SorterButton } = getSorterComponents<typeof field>();
+
 	return (
-		<button {...props} className={cn('h-full text-start', className)}>
+		<SorterButton
+			field={field} {...props}
+			className={cn('h-full justify-start gap-[0.5rem]', className)}
+		>
 			{children}
-		</button>
+		</SorterButton>
 	);
 }
