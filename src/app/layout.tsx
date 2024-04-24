@@ -6,6 +6,7 @@ import { cn } from "~/shared/lib/utils";
 import { fontManrope } from "~/shared/assets/fonts/manrope";
 import { ThemeProvider } from "./_theme";
 import { PageRoot } from "~/pages/root";
+import TanstackQueryProvider from "./_providers";
 
 export const metadata: Metadata = {
 	title: "BitRunes",
@@ -27,16 +28,18 @@ export default function RootLayout({
 					backgroundImage: 'radial-gradient(rgb(189 189 189 / 4%) -25%, rgba(255, 255, 255, 0))'
 				}}
 			>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="dark"
-					enableSystem
-					disableTransitionOnChange
-				>
-					<PageRoot>
-						{children}
-					</PageRoot>
-				</ThemeProvider>
+				<TanstackQueryProvider>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="dark"
+						enableSystem
+						disableTransitionOnChange
+					>
+						<PageRoot>
+							{children}
+						</PageRoot>
+					</ThemeProvider>
+				</TanstackQueryProvider>
 			</body>
 		</html>
 	);

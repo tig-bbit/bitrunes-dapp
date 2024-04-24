@@ -2,8 +2,7 @@ import { RichInput } from "~/shared/ui/common";
 import { Icons } from "~/shared/ui/icons";
 import { Heading, PagePaper } from "~/shared/ui/layout";
 import { TableContent } from "./TableContent";
-
-
+import { IndexerHydrationBoundary, prefetchRuneTickerQuery } from "~/shared/api/indexer";
 
 export function Table() {
 	return (
@@ -27,10 +26,13 @@ export function Table() {
 				/>
 			</div>
 
-			<div className='max-w-full overflow-x-auto'>
-				<TableContent />
+			<div className='w-full max-w-full overflow-x-auto grow'>
+				<IndexerHydrationBoundary
+					prefetchCallback={prefetchRuneTickerQuery}
+				>
+					<TableContent />
+				</IndexerHydrationBoundary>
 			</div>
-
 		</PagePaper>
 	);
 }

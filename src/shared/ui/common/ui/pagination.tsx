@@ -2,7 +2,7 @@ import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "~/shared/lib/utils"
-import { ButtonProps, buttonVariants } from "~/shared/ui/common/ui/button"
+import { Button, ButtonProps, buttonVariants } from "~/shared/ui/common/ui/button"
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
 	<nav
@@ -36,8 +36,7 @@ PaginationItem.displayName = "PaginationItem"
 
 type PaginationLinkProps = {
 	isActive?: boolean
-} & Pick<ButtonProps, "size"> &
-	React.ComponentProps<"a">
+} & ButtonProps
 
 const PaginationLink = ({
 	className,
@@ -45,16 +44,11 @@ const PaginationLink = ({
 	size = "icon",
 	...props
 }: PaginationLinkProps) => (
-	<a
-		aria-current={isActive ? "page" : undefined}
-		className={cn(
-			buttonVariants({
-				variant: isActive ? 'solid' : 'outline', size,
-				colorPallete: isActive ? 'primary' : undefined
-			}),
-			'rounded-full',
-			className
-		)}
+	<Button
+		size={size}
+		variant={isActive ? 'solid' : 'outline'}
+		colorPallete={isActive ? 'primary' : undefined}
+		className={cn('rounded-full', className)}
 		{...props}
 	/>
 )
@@ -96,7 +90,7 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<"span">) => (
 	<span
 		aria-hidden
-		className={cn("flex h-9 w-9 items-center justify-center", className)}
+		className={cn("flex h-8 w-8 items-center justify-center", className)}
 		{...props}
 	>
 		<MoreHorizontal className="h-4 w-4" />

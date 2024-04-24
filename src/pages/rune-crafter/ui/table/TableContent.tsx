@@ -1,13 +1,5 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import axios from 'axios';
-import { HTMLAttributes } from "react";
-import { cn } from "~/shared/lib/utils";
-import { Button, Progress } from "~/shared/ui/common";
-import { MintsPopover } from "./MintsPopover";
-import { ProgressPopover } from "./ProgressPopover";
-
 import {
 	Pagination,
 	PaginationContent,
@@ -17,13 +9,25 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "~/shared/ui/common"
+
+import { useState } from "react";
+import { HTMLAttributes } from "react";
+import { cn } from "~/shared/lib/utils";
+import { Button, Progress, Skeleton } from "~/shared/ui/common";
+import { ProgressPopover } from "./ProgressPopover";
+
 import { getSorterComponents } from "~/shared/ui/sorter";
+import { useRuneTickerQuery } from "~/shared/api/indexer";
+import { MintsPopover } from "./MintsPopover";
+import { dayJs } from "~/shared/lib/dayjs";
+import { generatePaginationSequence } from "~/shared/lib/pagination";
+
 
 const columns = [
 	{
 		label: 'Name',
 		type: 'name',
-		width: '12.5rem'
+		width: '15rem'
 	},
 	{
 		label: 'Progress',
@@ -33,11 +37,6 @@ const columns = [
 	{
 		label: 'Mints',
 		type: 'mints',
-		width: '6.25rem',
-	},
-	{
-		label: 'Holders',
-		type: 'holders',
 		width: '6.25rem',
 	},
 	{
@@ -59,73 +58,35 @@ const columns = [
 
 type ColumnType = typeof columns[number]['type'];
 
-const ITEMS_PER_PAGE = 10;
-
 const getColStyle = (index: number) => ({
 	width: columns[index].width,
 	padding: '0 0.5rem'
 })
 
 export function TableContent() {
-	const [runData, setData] = useState(null);
-	const [error, setError] = useState<string | null>(null);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [totalPages, setTotalPages] = useState(0);
+	const limit = 10;
+	const [page, setPage] = useState(1);
+	const { data, isFetching } = useRuneTickerQuery({ page, limit });
+	const lastPage = Math.floor(data?.total / limit);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await axios.get('https://brc20-api.luminex.io/runes/runes');
-				setData(response.data.data);
-				setTotalPages(Math.ceil(response.data.data.length / ITEMS_PER_PAGE));
-				console.log(response.data.data);
-				setError(null);
-			} catch (error) {
-				if (error instanceof Error) {
-					setError(error.message); // Assuming setError expects a string message
-				}
-			}
-		};
-
-		// Initial fetch
-		fetchData();
-
-		// // Fetch data every 5 seconds
-		// const intervalId = setInterval(fetchData, 5000);
-
-		// // Cleanup function to clear the interval when component unmounts
-		// return () => clearInterval(intervalId);
-	}, []);
-
-	const NextPage = () => {
-		setCurrentPage(currentPage + 1 > totalPages ? totalPages : currentPage + 1);
-	};
-	const PreviewPage = () => {
-		setCurrentPage(currentPage - 1 === 0 ? currentPage : currentPage - 1);
-	};
-	const twoPage = () => {
-		setCurrentPage(2);
-	}
-	const paginatedData = runData
-		? runData.slice(
-			(currentPage - 1) * ITEMS_PER_PAGE,
-			currentPage * ITEMS_PER_PAGE
-		)
-		: [];
-	if (error) {
-		return <div>Error: {error.message}</div>; // Display error message
+	const checkCanChangePage = (diff: 1 | -1) => {
+		const newPage = page + diff;
+		return newPage > 0 && newPage < lastPage;
 	}
 
-	if (!runData) {
-		return <div>Loading...</div>; // Or any other loading state
+	const handleChangePage = (diff: 1 | -1) => {
+		if (!checkCanChangePage(diff))
+			return;
+
+		setPage(p => p + diff);
 	}
 
 	const { Sorter } = getSorterComponents<ColumnType>();
 
 	return (
 		<div
-			className='flex flex-col gap-[1.5rem] text-black-60 light:text-black/80'
-			style={{ width: 'max(100%, 53rem)' }}
+			className='flex flex-col h-full gap-[1.5rem] text-black-60 light:text-black/80'
+			style={{ width: 'max(100%, 50rem)' }}
 		>
 			<nav className='flex px-[0.75rem] py-[0.625rem] rounded-[0.875rem] border border-secondary'>
 				<Sorter>
@@ -145,99 +106,108 @@ export function TableContent() {
 				</Sorter>
 			</nav>
 
-			<div className='shrink-0'>
-				{paginatedData.map((row, index: number) => (
-					<div
-						key={index}
-						className={cn(
-							'px-[0.75rem] h-[3.375rem] rounded-[1rem] flex items-center text-[0.875rem]',
-							index % 2 == 0 && 'bg-white/[.06] light:bg-black/[.06]',
-						)}
-					>
+			<div className='shrink-0 grow'>
+				{data?.items ? (
+					data?.items?.map((row, index: number) => (
 						<div
-							className='flex gap-[0.5rem] items-center w-full'
-							style={getColStyle(0)}
+							key={index}
+							className={cn(
+								'px-[0.75rem] h-[3.375rem] rounded-[1rem] flex items-center text-[0.875rem]',
+								index % 2 == 0 && 'bg-white/[.06] light:bg-black/[.06]',
+							)}
 						>
-							<span>{row.symbol}</span>
-							<span>{row.rune_text}</span>
-						</div>
-
-						<div style={getColStyle(1)}>
-							<ProgressPopover
-								progress={row.preminePercentage}
-								pending={row.circulating}
-								block={row.rune_block}
-							/>
-						</div>
-
-						<div style={getColStyle(2)}>
-							<MintsPopover mints={row.mints_count} history={row.history} />
-						</div>
-
-						<div style={getColStyle(3)}>
-							{row.holders}
-						</div>
-
-						<div style={getColStyle(4)}>
-							{row.number}
-						</div>
-
-						<div style={getColStyle(5)}>
-							{row.block_time}
-						</div>
-
-						<div
-							className='sticky right-2'
-							style={getColStyle(6)}
-						>
-							<Button
-								colorPallete='primary'
-								size='sm'
+							<div
+								className='flex gap-[0.5rem] items-center w-full max-w-full  shrink-0'
+								style={getColStyle(0)}
 							>
-								Mint
-							</Button>
+								<span className='w-[1rem]  shrink-0'>{row.symbol}</span>
+								<span className='truncate'>{row.rune_name}</span>
+							</div>
+
+							<div style={getColStyle(1)}>
+								<ProgressPopover
+									progress={!Number(row.terms_cap) ? 100 : ((Number(row.mints) / Number(row.terms_cap)) * 100)}
+									pending={row.circulating}
+									block={row.rune_block}
+								/>
+							</div>
+
+							<div style={getColStyle(2)}>
+								<MintsPopover
+									mints={row.mints}
+									history={row.history}
+								/>
+							</div>
+
+							<div style={getColStyle(3)}>
+								{row.number}
+							</div>
+
+							<div style={getColStyle(4)}>
+								{dayJs(row.timestamp).fromNow()}
+							</div>
+
+							<div
+								className='sticky right-2'
+								style={getColStyle(5)}
+							>
+								<Button
+									colorPallete='primary'
+									size='sm'
+								>
+									Mint
+								</Button>
+							</div>
 						</div>
-					</div>
-				))}
+					))
+				) : (
+					Array.from({ length: limit }).map((_, index) => (
+						<Skeleton
+							key={index}
+							className={cn(
+								'w-full h-[3.375rem] rounded-[1rem]',
+								index % 2 !== 0 && 'bg-transparent dark:bg-transparent'
+							)}
+						/>
+					))
+				)}
 			</div>
 
 			<Pagination>
-				<PaginationContent className='justify-between w-full'>
+				<PaginationContent className='justify-between w-full pb-2'>
 					<PaginationItem>
-						<PaginationPrevious onClick={PreviewPage} href="#" />
+						<PaginationPrevious
+							onClick={() => handleChangePage(-1)}
+							disabled={!checkCanChangePage(-1) || isFetching}
+						/>
 					</PaginationItem>
 
-					<div className='flex gap-[0.5rem]'>
-						<PaginationItem>
-							{currentPage == 1 ?
-								<PaginationLink onClick={PreviewPage} isActive href="#">
-									{currentPage - 1 === 0 ? currentPage : currentPage - 1}
-								</PaginationLink>
-								:
-								<PaginationLink onClick={PreviewPage} href="#">
-									{currentPage - 1 === 0 ? currentPage : currentPage - 1}
-								</PaginationLink>
-							}
-						</PaginationItem>
-						<PaginationItem>
-							{currentPage == 1 ?
-								<PaginationLink onClick={twoPage} href="#">
-									{currentPage - 1 === 0 ? currentPage + 1 : currentPage}
-								</PaginationLink>
-								:
-								<PaginationLink isActive href="#">
-									{currentPage - 1 === 0 ? currentPage + 1 : currentPage}
-								</PaginationLink>}
-						</PaginationItem>
-						<PaginationItem>
-							<PaginationLink onClick={NextPage}>
-								{currentPage - 1 === 0 ? currentPage + 2 : currentPage + 1}
-							</PaginationLink>
-						</PaginationItem>
-					</div>
-
+					{!isNaN(lastPage) && (
+						<div className='flex gap-[0.5rem]'>
+							{generatePaginationSequence(page, lastPage).map((p, index) => (
+								p == '...' ? (
+									<PaginationItem key={index}>
+										<PaginationEllipsis />
+									</PaginationItem>
+								) : (
+									<PaginationItem key={index}>
+										<PaginationLink
+											isActive={page == p}
+											onClick={() => setPage(p)}
+											disabled={isFetching}
+										>
+											{p}
+										</PaginationLink>
+									</PaginationItem>
+								)
+							))}
+						</div>
+					)}
 					<PaginationItem>
-						<PaginationNext onClick={NextPage} href="#" />
+						<PaginationNext
+							onClick={() => handleChangePage(+1)}
+							disabled={!checkCanChangePage(+1) || isFetching}
+						/>
 					</PaginationItem>
 				</PaginationContent>
 			</Pagination>
