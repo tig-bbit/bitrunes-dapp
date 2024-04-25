@@ -17,10 +17,11 @@ const getOptions = ({ page = 0, limit = 10 }: PaginationProps = {}) =>
 		queryFn: async () => {
 			const res = await fetch(`/api/rune/tickers?skip=${(page - 1) * limit}&take=${limit}`);
 			const body = await res.json();
+			const items = body.data.data as unknown[];
 
 			return { 
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				items: body.data.data.map(mapRuneDto) as any[], 
+				items: items.map(mapRuneDto), 
 				total: body.data.total 
 			};
 		},

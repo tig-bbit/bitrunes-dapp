@@ -4,22 +4,23 @@ import { PropsWithChildren, createContext, useContext, useRef } from 'react';
 import { StoreApi, createStore } from 'zustand/vanilla'
 import { useStore } from 'zustand'
 import { invariant } from '~/shared/lib/asserts';
+import { Rune } from '~/shared/api/indexer';
 
 interface State {
-	runeTickerToMint: string | null
+	runeToMint: Rune | null
 }
 
 interface Actions {
-	setRuneToMint: (ticker: string) => void
+	setRuneToMint: (ticker: Rune) => void
 }
 
 type Store = State & Actions;
 
 function createRuneCrafterStore() {
 	return createStore<Store>()((set) => ({
-		runeTickerToMint: null,
-		setRuneToMint: runeTickerToMint =>
-			set(state => ({ ...state, runeTickerToMint }))
+		runeToMint: null,
+		setRuneToMint: runeToMint =>
+			set(state => ({ ...state, runeToMint }))
 	}))
 }
 
