@@ -19,7 +19,8 @@ const getOptions = ({ page = 0, limit = 10 }: PaginationProps = {}) =>
 			const body = await res.json();
 
 			return { 
-				items: body.data.data.map(mapRuneDto), 
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				items: body.data.data.map(mapRuneDto) as any[], 
 				total: body.data.total 
 			};
 		},

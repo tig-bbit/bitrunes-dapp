@@ -3,13 +3,10 @@
 import {
 	Button,
 	Drawer,
-	DrawerClose,
 	DrawerContent,
-	DrawerDescription,
 	DrawerDragger,
 	DrawerFooter,
 	DrawerHeader,
-	DrawerTitle,
 	DrawerTrigger,
 } from '~/shared/ui/common';
 

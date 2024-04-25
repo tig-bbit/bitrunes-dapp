@@ -27,7 +27,7 @@ const Progress = React.forwardRef<
 					...v
 				}))
 				.reverse()
-				.map((entry, index, arr) => (
+				.map((entry, index) => (
 					<ProgressPrimitive.Indicator
 						key={index}
 						className="absolute h-full w-full flex-1 transition-all"

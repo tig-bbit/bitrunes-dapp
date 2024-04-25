@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { Stepper, StepperProps, StepperStep } from "~/shared/ui/stepper";
 
 export function EtcherStepper(props: StepperProps) {

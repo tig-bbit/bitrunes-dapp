@@ -1,44 +1,29 @@
-"use client";
+"use server";
 
-import React, { useState, useEffect, PropsWithChildren} from "react";
 import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-  DehydratedState,
+	dehydrate,
+	HydrationBoundary,
+	QueryClient,
 } from "@tanstack/react-query";
-import { createClient } from "./createClient";
 
-interface IndexerHydrationBoundaryProps extends PropsWithChildren{
-  prefetchCallback: (client: QueryClient) => Promise<void>;
+import { createClient } from "./createClient";
+import { PropsWithChildren } from "react";
+
+interface IndexerHydrationBoundaryProps extends PropsWithChildren {
+	prefetchCallback: (client: QueryClient) => Promise<void>;
 }
 
-export function IndexerHydrationBoundary({
-  children,
-  prefetchCallback,
+export async function IndexerHydrationBoundary({
+	children,
+	prefetchCallback,
 }: IndexerHydrationBoundaryProps) {
-  const [client] = useState(createClient());
-  const [hydrationState, setHydrationState] = useState<DehydratedState | undefined>(undefined);
+	const client = createClient()
+	
+	await prefetchCallback(client);
 
-  useEffect(() => {
-    let isActive = true;
-    const fetchData = async () => {
-      await prefetchCallback(client);
-      if (isActive) {
-        setHydrationState(dehydrate(client));
-      }
-    };
-    fetchData();
-    return () => {
-      isActive = false; 
-    };
-  }, [prefetchCallback, client]);
-
-  if (!hydrationState) {
-    return <div>Loading...</div>; 
-  }
-
-  return (
-    <HydrationBoundary state={hydrationState}>{children}</HydrationBoundary>
-  );
+	return (
+		<HydrationBoundary state={dehydrate(client)}>
+			{children}
+		</HydrationBoundary>
+	);
 }
