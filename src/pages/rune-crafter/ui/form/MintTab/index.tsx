@@ -6,6 +6,7 @@ import { FormProvider } from "react-hook-form";
 import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
 import { useRuneCrafterStoreApi } from "~/pages/rune-crafter/model";
 import { useEffect } from "react";
+import { fixRuneTickerInput } from "../schemaRuneTicker";
 
 export function MintTab() {
 	const methods = useFormValidation();
@@ -61,7 +62,7 @@ export function MintTab() {
 						label='Rune Ticker*'
 						placeholder='Enter rune ticker'
 						onChange={e => {
-							methods.setValue('runeTicker', e.target.value.replaceAll(' ', '•'), {
+							methods.setValue('runeTicker', fixRuneTickerInput(e.target.value), {
 								shouldDirty: true, shouldValidate: true, shouldTouch: true
 							})
 						}}
