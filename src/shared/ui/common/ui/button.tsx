@@ -32,7 +32,7 @@ const buttonVariants = cva([
 			sm: 'px-[0.5rem] py-[0.125rem] text-[0.75rem]/[1.4] rounded-full',
 			default: 'leading-auto py-[0.62rem] px-[1rem] rounded-[2.62rem] min-h-[2.625rem] min-w-[2.625rem] min-size',
 			lg: 'p-[1rem]',
-			icon: 'size-[2rem]'
+			icon: 'h-[2rem] min-w-[2rem] w-full px-[0.25rem]'
 		},
 		colorPallete: {
 			default: [],
