@@ -108,7 +108,7 @@ export function TableContent() {
 
 			<div className='shrink-0 grow'>
 				{data?.items ? (
-					data?.items?.map((row, index: number) => (
+					data?.items?.map((row:any, index: number) => (
 						<div
 							key={index}
 							className={cn(
