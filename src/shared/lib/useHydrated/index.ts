@@ -10,7 +10,7 @@ export function useIsMounted() {
 let hydrating = true;
 
 export function useIsHydrated() {
-	let [hydrated, setHydrated] = useState(() => !hydrating);
+	const [hydrated, setHydrated] = useState(() => !hydrating);
 
 	useEffect(function hydrate() {
 		hydrating = false;

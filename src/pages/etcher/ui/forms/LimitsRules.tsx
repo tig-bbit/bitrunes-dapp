@@ -1,15 +1,16 @@
 'use client';
 
-import Link from "next/link";
-import { useForm } from "react-hook-form";
 import {
 	Button, Form,
 	FormControl, FormDescription,
-	FormItem, FormLabel, Input,
+	FormItem, FormLabel,
 	NumberInput, ToggleGroupRadio,
 	ToggleGroupItem,
 	FormElementsGroup
 } from "~/shared/ui/common";
+
+import Link from "next/link";
+import { useForm } from "react-hook-form";
 import { NavButtonsFooter } from "../NavButtonsFooter";
 
 export function LimitRulesForm() {

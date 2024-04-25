@@ -1,15 +1,17 @@
 'use client';
 
-import Link from "next/link";
-import { useForm } from "react-hook-form";
 import {
 	Button, Form,
 	FormControl, FormDescription,
-	FormItem, FormLabel, Input,
-	NumberInput, ToggleGroupRadio,
+	FormElementsGroup,
+	FormItem, FormLabel,
+	NumberInput,
 	ToggleGroupItem,
-	FormElementsGroup
+	ToggleGroupRadio
 } from "~/shared/ui/common";
+
+import Link from "next/link";
+import { useForm } from "react-hook-form";
 import { NavButtonsFooter } from "../NavButtonsFooter";
 
 export function ConfigurationForm() {

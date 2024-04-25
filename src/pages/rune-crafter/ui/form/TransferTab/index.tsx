@@ -1,4 +1,4 @@
-import { Button, ToggleGroupItem, ToggleGroupRadio } from "~/shared/ui/common";
+import { Button, ToggleGroupItem } from "~/shared/ui/common";
 import { FeeToggle } from "../../inputs/FeeToggle";
 import { VTextInput } from "../../inputs/VTextInput";
 import { RuneSelector } from "./RuneSelector";
