@@ -22,6 +22,7 @@ import { MintsPopover } from "./MintsPopover";
 import { dayJs } from "~/shared/lib/dayjs";
 import { generatePaginationSequence } from "~/shared/lib/pagination";
 import { useRuneCrafterStore } from "../../model";
+import Link from "next/link";
 
 
 const columns = [
@@ -112,8 +113,6 @@ export function TableContent() {
 			<div className='shrink-0 grow'>
 				{data?.items ? (
 					data?.items?.map((row, index: number) => {
-						const progress = !Number(row.terms_cap) ? 100 : ((Number(row.mints) / Number(row.terms_cap)) * 100);
-
 						return (
 							<div
 								key={index}
@@ -122,27 +121,25 @@ export function TableContent() {
 									index % 2 == 0 && 'bg-white/[.06] light:bg-black/[.06]',
 								)}
 							>
-								<div
-									className='flex gap-[0.5rem] items-center w-full max-w-full  shrink-0'
-									style={getColStyle(0)}
+								<Link
+									className='hocus:text-primary transition-all'
+									href={`/rune-crafter/runes/${row.rune_name_wo_spacers}`}
 								>
-									<span className='w-[1rem]  shrink-0'>{row.symbol}</span>
-									<span className='truncate'>{row.rune_name}</span>
-								</div>
+									<div
+										className='flex gap-[0.5rem] items-center w-full max-w-full  shrink-0'
+										style={getColStyle(0)}
+									>
+										<span className='w-[1rem]  shrink-0'>{row.symbol}</span>
+										<span className='truncate'>{row.rune_name}</span>
+									</div>
+								</Link>
 
 								<div style={getColStyle(1)}>
-									<ProgressPopover
-										progress={progress}
-										pending={row.circulating}
-										block={row.rune_block}
-									/>
+									<ProgressPopover rune={row} />
 								</div>
 
 								<div style={getColStyle(2)}>
-									<MintsPopover
-										mints={row.mints}
-										history={row.history}
-									/>
+									<MintsPopover rune={row} />
 								</div>
 
 								<div style={getColStyle(3)}>
@@ -153,7 +150,7 @@ export function TableContent() {
 									{dayJs(row.timestamp).fromNow()}
 								</div>
 
-								{progress != 100 && (
+								{row.progress != 100 && (
 									<div
 										className='sticky right-2'
 										style={getColStyle(5)}
@@ -161,7 +158,7 @@ export function TableContent() {
 										<Button
 											colorPallete='primary'
 											size='sm'
-											onClick={() => setRuneToMint(row.rune_name)}
+											onClick={() => setRuneToMint(row)}
 										>
 											Mint
 										</Button>

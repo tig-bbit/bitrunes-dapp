@@ -2,13 +2,27 @@ import { z } from "zod";
 
 export const schemaRuneTicker = z.string()
 	.regex(/^[a-zA-Z•]*$/, 'Only a-Z letters')
-	.min(13, 'Min 13 chars')
-	.max(28, 'Max 28 chars')
 	.superRefine((str, ctx) => {
 		if(str.startsWith('•') || str.endsWith('•')) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: 'Start/end • not allowed',
+			})
+		}
+
+		const strWoSpacers = str.replaceAll('•', '');
+
+		if(strWoSpacers.length < 13) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Min 13 chars',
+			})
+		}
+
+		if(strWoSpacers.length > 28) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Max 28 chars',
 			})
 		}
 	})

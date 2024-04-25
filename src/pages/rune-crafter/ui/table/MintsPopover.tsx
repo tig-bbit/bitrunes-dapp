@@ -1,26 +1,26 @@
 'use client';
 
 import { useState } from "react";
+import { Rune } from "~/shared/api/indexer";
 import { cn } from "~/shared/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/common";
 
 interface DataProps {
-	mints: number;
-	history: Record<string, number>;
+	rune: Rune;
+	history?: Record<string, number>;
 }
 
-export function MintsPopover(props: DataProps) {
+export function MintsPopover({ rune, history = {} }: DataProps) {
 	const [open, setOpen] = useState(false);
-	const { mints, history = {} } = props;
 
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
+		<Popover open={false} onOpenChange={setOpen}>
 			<PopoverTrigger
 				onPointerEnter={() => setOpen(true)}
 				onPointerLeave={() => setOpen(false)}
 				className={cn('px-[0.5rem] py-[0.25rem] rounded-[0.25rem] w-full text-start', open && 'bg-white/[.08]')}
 			>
-				{mints > 1e7 ? 'Unlimited' : mints}
+				{rune.mints}
 			</PopoverTrigger>
 
 			<PopoverContent className='flex flex-col gap-[0.75rem] text-[0.875rem]'>
