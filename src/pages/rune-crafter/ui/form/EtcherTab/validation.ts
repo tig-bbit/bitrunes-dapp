@@ -9,11 +9,11 @@ const schema = z.object({
 	runeName: schemaRuneTicker,
 	runeSymbol: z.string().length(1, 'Only one symbol'),
 	destAddress: z.string().min(3),
-	divisibility: z.coerce.number().optional(),
-	premine: z.coerce.number().optional(),
+	divisibility: z.coerce.number().int().optional(),
+	premine: z.coerce.number().int().optional(),
 	mintType: z.enum(['open', 'closed']),
-	mintAmount: z.coerce.number().optional(),
-	mintCap: z.coerce.number().optional(),
+	mintAmount: z.coerce.number().int().optional(),
+	mintCap: z.coerce.number().int().optional(),
 })
 
 export function useFormValidation() {
