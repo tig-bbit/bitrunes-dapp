@@ -1,4 +1,4 @@
-import { ToggleGroupRadio, ToggleGroupItem, Button, Progress } from "~/shared/ui/common";
+import { ToggleGroupItem, Button, Progress } from "~/shared/ui/common";
 import { VTextInput } from "../../inputs/VTextInput";
 import { FeeToggle } from "../../inputs/FeeToggle";
 import { useFormValidation } from "./validation";

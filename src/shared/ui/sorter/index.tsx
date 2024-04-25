@@ -39,6 +39,7 @@ function Sorter<T extends string>({ children, onChange }: SorterProps<T>) {
 	const contextValue = useMemo(() => ({ params, setParams }), [params, setParams]);
 
 	return (
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		<context.Provider value={contextValue as any}>
 			{children}
 		</context.Provider>

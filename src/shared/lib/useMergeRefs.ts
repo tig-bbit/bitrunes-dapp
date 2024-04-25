@@ -3,6 +3,7 @@
 import { useMemo } from "react"
 export type ReactRef<T> = React.RefCallback<T> | React.MutableRefObject<T>
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function assignRef<T = any>(
 	ref: ReactRef<T> | null | undefined,
 	value: T,

@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import { HTMLAttributes } from "react";
 import { cn } from "~/shared/lib/utils";
-import { Button, Progress, Skeleton } from "~/shared/ui/common";
+import { Button, Skeleton } from "~/shared/ui/common";
 import { ProgressPopover } from "./ProgressPopover";
 
 import { getSorterComponents } from "~/shared/ui/sorter";

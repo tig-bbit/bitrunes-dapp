@@ -1,18 +1,24 @@
+"use server";
+
 import {
 	dehydrate,
 	HydrationBoundary,
 	QueryClient,
-} from '@tanstack/react-query'
+} from "@tanstack/react-query";
 
-import { PropsWithChildren } from 'react';
-import { createClient } from './createClient';
+import { createClient } from "./createClient";
+import { PropsWithChildren } from "react";
 
 interface IndexerHydrationBoundaryProps extends PropsWithChildren {
 	prefetchCallback: (client: QueryClient) => Promise<void>;
 }
 
-export async function IndexerHydrationBoundary({ children, prefetchCallback }: IndexerHydrationBoundaryProps) {
-	const client = createClient();
+export async function IndexerHydrationBoundary({
+	children,
+	prefetchCallback,
+}: IndexerHydrationBoundaryProps) {
+	const client = createClient()
+	
 	await prefetchCallback(client);
 
 	return (
