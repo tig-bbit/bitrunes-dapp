@@ -23,7 +23,7 @@ export const RichInput = forwardRef<HTMLInputElement, RichInputProps>(
 					rootProps?.className
 				)}
 			>
-				<div className={cn('flex flex-col gap-[0.25rem] text-inherit', size == 'small' && 'gap-0')}>
+				<div className={cn('flex flex-col gap-[0.25rem] text-inherit grow', size == 'small' && 'gap-0')}>
 					{topElement}
 					<input
 						ref={ref} {...props} id={id}
