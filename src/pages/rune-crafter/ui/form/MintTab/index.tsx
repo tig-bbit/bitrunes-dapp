@@ -4,9 +4,24 @@ import { FeeToggle } from "../../inputs/FeeToggle";
 import { useFormValidation } from "./validation";
 import { FormProvider } from "react-hook-form";
 import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
+import { useRuneCrafterStoreApi } from "~/pages/rune-crafter/model";
+import { useEffect } from "react";
 
 export function MintTab() {
 	const methods = useFormValidation();
+	const { setValue: setFormValue } = methods;
+	const { subscribe } = useRuneCrafterStoreApi();
+
+	useEffect(() => {
+		return subscribe(({ runeTickerToMint }) => {
+			if (!runeTickerToMint)
+				return;
+
+			setFormValue('runeTicker', runeTickerToMint, {
+				shouldDirty: true, shouldValidate: true, shouldTouch: true
+			});
+		});
+	}, [subscribe, setFormValue]);
 
 	const onSubmit = methods.handleSubmit(values => {
 		alert(JSON.stringify(values, undefined, 4));
@@ -14,7 +29,7 @@ export function MintTab() {
 
 	return (
 		<FormProvider {...methods}>
-			<form 
+			<form
 				className='flex flex-col gap-[1.5rem] w-full grow justify-between'
 				onSubmit={onSubmit}
 			>
@@ -45,6 +60,11 @@ export function MintTab() {
 						name='runeTicker'
 						label='Rune Ticker*'
 						placeholder='Enter rune ticker'
+						onChange={e => {
+							methods.setValue('runeTicker', e.target.value.replaceAll(' ', '•'), {
+								shouldDirty: true, shouldValidate: true, shouldTouch: true
+							})
+						}}
 					/>
 
 					<VTextInput

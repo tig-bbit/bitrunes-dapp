@@ -21,6 +21,7 @@ import { useRuneTickerQuery } from "~/shared/api/indexer";
 import { MintsPopover } from "./MintsPopover";
 import { dayJs } from "~/shared/lib/dayjs";
 import { generatePaginationSequence } from "~/shared/lib/pagination";
+import { useRuneCrafterStore } from "../../model";
 
 
 const columns = [
@@ -69,6 +70,8 @@ export function TableContent() {
 	const { data, isFetching } = useRuneTickerQuery({ page, limit });
 	const lastPage = Math.floor(data?.total / limit);
 
+	const setRuneToMint = useRuneCrafterStore(s => s.setRuneToMint);
+
 	const checkCanChangePage = (diff: 1 | -1) => {
 		const newPage = page + diff;
 		return newPage > 0 && newPage < lastPage;
@@ -108,58 +111,65 @@ export function TableContent() {
 
 			<div className='shrink-0 grow'>
 				{data?.items ? (
-					data?.items?.map((row, index: number) => (
-						<div
-							key={index}
-							className={cn(
-								'px-[0.75rem] h-[3.375rem] rounded-[1rem] flex items-center text-[0.875rem]',
-								index % 2 == 0 && 'bg-white/[.06] light:bg-black/[.06]',
-							)}
-						>
+					data?.items?.map((row, index: number) => {
+						const progress = !Number(row.terms_cap) ? 100 : ((Number(row.mints) / Number(row.terms_cap)) * 100);
+
+						return (
 							<div
-								className='flex gap-[0.5rem] items-center w-full max-w-full  shrink-0'
-								style={getColStyle(0)}
+								key={index}
+								className={cn(
+									'px-[0.75rem] h-[3.375rem] rounded-[1rem] flex items-center text-[0.875rem]',
+									index % 2 == 0 && 'bg-white/[.06] light:bg-black/[.06]',
+								)}
 							>
-								<span className='w-[1rem]  shrink-0'>{row.symbol}</span>
-								<span className='truncate'>{row.rune_name}</span>
-							</div>
-
-							<div style={getColStyle(1)}>
-								<ProgressPopover
-									progress={!Number(row.terms_cap) ? 100 : ((Number(row.mints) / Number(row.terms_cap)) * 100)}
-									pending={row.circulating}
-									block={row.rune_block}
-								/>
-							</div>
-
-							<div style={getColStyle(2)}>
-								<MintsPopover
-									mints={row.mints}
-									history={row.history}
-								/>
-							</div>
-
-							<div style={getColStyle(3)}>
-								{row.number}
-							</div>
-
-							<div style={getColStyle(4)}>
-								{dayJs(row.timestamp).fromNow()}
-							</div>
-
-							<div
-								className='sticky right-2'
-								style={getColStyle(5)}
-							>
-								<Button
-									colorPallete='primary'
-									size='sm'
+								<div
+									className='flex gap-[0.5rem] items-center w-full max-w-full  shrink-0'
+									style={getColStyle(0)}
 								>
-									Mint
-								</Button>
+									<span className='w-[1rem]  shrink-0'>{row.symbol}</span>
+									<span className='truncate'>{row.rune_name}</span>
+								</div>
+
+								<div style={getColStyle(1)}>
+									<ProgressPopover
+										progress={progress}
+										pending={row.circulating}
+										block={row.rune_block}
+									/>
+								</div>
+
+								<div style={getColStyle(2)}>
+									<MintsPopover
+										mints={row.mints}
+										history={row.history}
+									/>
+								</div>
+
+								<div style={getColStyle(3)}>
+									{row.number}
+								</div>
+
+								<div style={getColStyle(4)}>
+									{dayJs(row.timestamp).fromNow()}
+								</div>
+
+								{progress != 100 && (
+									<div
+										className='sticky right-2'
+										style={getColStyle(5)}
+									>
+										<Button
+											colorPallete='primary'
+											size='sm'
+											onClick={() => setRuneToMint(row.rune_name)}
+										>
+											Mint
+										</Button>
+									</div>
+								)}
 							</div>
-						</div>
-					))
+						)
+					})
 				) : (
 					Array.from({ length: limit }).map((_, index) => (
 						<Skeleton
