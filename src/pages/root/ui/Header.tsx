@@ -7,7 +7,7 @@ import { ColorModeToggler } from "./ColorModeToggler";
 import { MobileDrawer } from "./MobileDrawer";
 import { useWindowScroll } from "~/shared/lib/useWindowScroll";
 import { cn } from "~/shared/lib/utils";
-import Link from "next/link";
+import { BuyBruneButton } from "./BuyBruneButton";
 
 export function Header() {
 	const isScrolled = useWindowScroll({ threshold: 10 });
@@ -23,12 +23,7 @@ export function Header() {
 				<Button variant='outline' colorPallete='primary'>
 					Connect BTC
 				</Button>
-				<Button
-					asChild variant='solid'
-					colorPallete='primary'
-				>
-					<Link href='/rune-crafter'>Buy $BRUNE</Link>
-				</Button>
+				<BuyBruneButton />
 
 				<ColorModeToggler />
 			</div>

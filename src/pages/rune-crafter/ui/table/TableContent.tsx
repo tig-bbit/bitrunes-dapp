@@ -17,7 +17,7 @@ import { Button, Skeleton } from "~/shared/ui/common";
 import { ProgressPopover } from "./ProgressPopover";
 
 import { getSorterComponents } from "~/shared/ui/sorter";
-import { useRuneTickerQuery } from "~/shared/api/indexer";
+import { useRuneTickersQuery } from "~/shared/api/indexer";
 import { MintsPopover } from "./MintsPopover";
 import { dayJs } from "~/shared/lib/dayjs";
 import { generatePaginationSequence } from "~/shared/lib/pagination";
@@ -68,7 +68,7 @@ const getColStyle = (index: number) => ({
 export function TableContent() {
 	const limit = 10;
 	const [page, setPage] = useState(1);
-	const { data, isFetching } = useRuneTickerQuery({ page, limit });
+	const { data, isFetching } = useRuneTickersQuery({ page, limit });
 	const lastPage = Math.floor(data?.total / limit);
 
 	const setRuneToMint = useRuneCrafterStore(s => s.setRuneToMint);

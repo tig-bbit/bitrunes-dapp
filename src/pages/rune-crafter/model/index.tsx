@@ -11,7 +11,7 @@ interface State {
 }
 
 interface Actions {
-	setRuneToMint: (ticker: Rune) => void
+	setRuneToMint: (ticker: Rune | null) => void
 }
 
 type Store = State & Actions;

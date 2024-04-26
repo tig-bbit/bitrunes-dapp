@@ -13,9 +13,9 @@ import {
 import { HeaderLogo } from './HeaderLogo';
 import { useEffect, useState } from 'react';
 import { Menu as IconMenu, X as IconX } from 'lucide-react';
-import Link from 'next/link';
 import { ColorModeToggler } from './ColorModeToggler';
 import { usePathname } from 'next/navigation';
+import { BuyBruneButton } from './BuyBruneButton';
 
 export function MobileDrawer() {
 	const [open, setOpen] = useState(false);
@@ -58,12 +58,7 @@ export function MobileDrawer() {
 							Connect BTC
 						</Button>
 
-						<Button
-							asChild variant='solid'
-							colorPallete='primary'
-						>
-							<Link href='/rune-crafter'>Buy $BRUNE</Link>
-						</Button>
+						<BuyBruneButton />
 
 						<ColorModeToggler>
 							{theme => theme == 'dark' ? 'Light theme' : 'Dark theme'}

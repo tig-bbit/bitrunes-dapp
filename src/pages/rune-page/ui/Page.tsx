@@ -1,18 +1,18 @@
-import { PagePaper } from "~/shared/ui/layout";
-import { fetchRuneData } from "../api";
+import { fetchRuneDetails } from "../api";
+import { DetailsSection } from "./DetailsSection";
+import { HoldersSection } from "./HoldersSection";
 
 interface PageProps {
 	runeName: string
 }
 
-export async function Page({ runeName }: PageProps) {
-	const data = await fetchRuneData(runeName);
+export async function Page({ runeName }: PageProps) {	
+	const details = await fetchRuneDetails(runeName);
 
 	return (
-		<PagePaper>
-			<pre>
-				{JSON.stringify(data, undefined, 4)}
-			</pre>
-		</PagePaper>
+		<div className='flex flex-col gap-[1.25rem] h-full'>
+			<DetailsSection details={details} />
+			<HoldersSection rune={details} />
+		</div>
 	);
 }

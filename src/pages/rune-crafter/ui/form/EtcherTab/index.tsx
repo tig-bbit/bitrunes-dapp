@@ -3,7 +3,7 @@
 import { ImageUploader } from "~/shared/ui/image-uploader";
 import { InputHint } from "../../inputs/Hint";
 import { VTextInput } from "../../inputs/VTextInput";
-import { Button, ToggleGroupItem, ToggleGroupRadio } from "~/shared/ui/common";
+import { Button, ToggleGroupItem } from "~/shared/ui/common";
 import { useFormValidation } from "./validation";
 import { FormProvider } from "react-hook-form";
 import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
@@ -122,7 +122,7 @@ function MintOptions() {
 						/>
 					</div>
 
-					<div className='flex flex-col gap-[0.5rem]'>
+					{/* <div className='flex flex-col gap-[0.5rem]'>
 						<span className='text-black-60 text-[0.875rem]'>
 							Rune Inscription
 						</span>
@@ -131,7 +131,7 @@ function MintOptions() {
 								Choose File
 							</ToggleGroupItem>
 						</ToggleGroupRadio>
-					</div>
+					</div> */}
 				</>
 			)}
 		</div>

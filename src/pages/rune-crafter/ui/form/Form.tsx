@@ -1,14 +1,21 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToggleGroupRadio, ToggleGroupItem } from "~/shared/ui/common";
 import { Heading, PagePaper } from "~/shared/ui/layout";
 import { EtcherTab } from "./EtcherTab";
 import { MintTab } from "./MintTab";
 import { TransferTab } from "./TransferTab";
+import { useRuneCrafterStore } from "../../model";
 
 export function Form() {
 	const [tab, setTab] = useState('etcher');
+	const runeToMint = useRuneCrafterStore(s => s.runeToMint);
+
+	useEffect(() => {
+		if(runeToMint)
+			setTab('mint');
+	}, [runeToMint]);
 
 	return (
 		<PagePaper className='items-start w-full p-[1.5rem] max-w-[28.3125rem] gap-[1.5rem] max-lg:max-w-full shrink-0'>
