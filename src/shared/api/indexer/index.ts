@@ -3,6 +3,11 @@ export { IndexerHydrationBoundary } from './rendering';
 export {
 	useTickerQuery as useRuneTickerQuery,
 	prefetchQuery as prefetchRuneTickerQuery
-} from './rune-tickers'
+} from './runes/tickers'
 
-export type { Rune } from './rune-tickers/model'
+export {
+	useDetailsQuery as useRuneDetailsQuery,
+	fetchDetails as fetchRuneDetails
+} from './runes/details'
+
+export type { Rune } from './runes/model'

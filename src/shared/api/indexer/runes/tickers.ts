@@ -4,6 +4,7 @@ import {
 	queryOptions,
 	useQuery
 } from "@tanstack/react-query";
+
 import { mapRuneDto } from "./dto";
 
 interface PaginationProps {
@@ -15,9 +16,12 @@ const getOptions = ({ page = 0, limit = 10 }: PaginationProps = {}) =>
 	queryOptions({
 		queryKey: ['rune-tickers', page, limit],
 		queryFn: async () => {
-			const res = await fetch(`/api/rune/tickers?skip=${(page - 1) * limit}&take=${limit}`);
+			const res = await fetch(`/api/runes/tickers?skip=${(page - 1) * limit}&take=${limit}`);
 			const body = await res.json();
 			const items = body.data.data as unknown[];
+
+			if(!res.ok)
+				throw new Error(body)
 
 			return { 
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -2,26 +2,16 @@ import { ToggleGroupItem, Button, Progress } from "~/shared/ui/common";
 import { VTextInput } from "../../inputs/VTextInput";
 import { FeeToggle } from "../../inputs/FeeToggle";
 import { useFormValidation } from "./validation";
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useFormContext } from "react-hook-form";
 import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
 import { useRuneCrafterStore } from "~/pages/rune-crafter/model";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { fixRuneTickerInput } from "../schemaRuneTicker";
+import { fetchRuneDetails } from "~/shared/api/indexer";
+import { useDebounce } from "~/shared/lib/debounce";
 
 export function MintTab() {
 	const methods = useFormValidation();
-	const { setValue: setFormValue } = methods;
-
-	const runeToMint = useRuneCrafterStore(s => s.runeToMint);
-	const runeTicker = runeToMint?.rune_name;
-
-	useEffect(() => {
-		if (!runeTicker)
-			return;
-
-		setFormValue('runeTicker', runeTicker, {
-			shouldDirty: true, shouldValidate: true, shouldTouch: true
-		});
-	}, [runeTicker, setFormValue]);
 
 	const onSubmit = methods.handleSubmit(values => {
 		alert(JSON.stringify(values, undefined, 4));
@@ -33,38 +23,7 @@ export function MintTab() {
 				className='flex flex-col gap-[1.5rem] w-full grow justify-between'
 				onSubmit={onSubmit}
 			>
-				{runeToMint && (
-					<div className='flex flex-col gap-[0.5rem] w-full'>
-						<span className='text-black-60 text-[0.875rem]'>
-							Minted {runeToMint.progress.toFixed(2)}%
-						</span>
-
-						<Progress
-							value={runeToMint.progress}
-						/>
-
-						<div className='flex justify-between gap-[0.5rem] w-full text-[0.75rem]'>
-							<span className='text-black-40'>
-								{runeToMint.mints} / {runeToMint.terms_cap} minted
-							</span>
-						</div>
-					</div>
-				)}
-
-				<div className='flex flex-col gap-[1rem] w-full grow'>
-					<VTextInput
-						name='runeTicker'
-						label='Rune Ticker*'
-						placeholder='Select any ticker from the table'
-						readOnly disabled
-					/>
-
-					<VTextInput
-						name='repeatMint'
-						label='Repeat Mint*'
-						placeholder='Enter repeat mint'
-					/>
-				</div>
+				<RuneControls />
 
 				<div className='flex flex-col gap-[0.5rem] w-full'>
 					<span className='text-black-60 text-[0.875rem]'>
@@ -92,3 +51,77 @@ export function MintTab() {
 		</FormProvider>
 	)
 }
+
+function RuneControls() {
+	const { setValue } = useFormContext();
+	const [isLoading, setIsLoader] = useState(false);
+
+	const runeToMint = useRuneCrafterStore(s => s.runeToMint);
+	const setRuneToMint = useRuneCrafterStore(s => s.setRuneToMint);
+
+	const runeTicker = runeToMint?.rune_name;
+
+	useEffect(() => {
+		if (!runeTicker)
+			return;
+
+		setValue('runeTicker', runeTicker, {
+			shouldDirty: true, shouldValidate: true, shouldTouch: true
+		});
+	}, [runeTicker, setValue]);
+
+	const fetchDetails = useDebounce(async (runeName: string) => {
+		setIsLoader(true);
+
+		fetchRuneDetails(runeName)
+			.then(setRuneToMint)
+			.finally(() => setIsLoader(false))
+	}, 500);
+
+	return (
+		<>
+			{runeToMint && (
+				<div className='flex flex-col gap-[0.5rem] w-full'>
+					<span className='text-black-60 text-[0.875rem]'>
+						Minted {runeToMint.progress.toFixed(2)}%
+					</span>
+
+					<Progress
+						value={runeToMint.progress}
+					/>
+
+					<div className='flex justify-between gap-[0.5rem] w-full text-[0.75rem]'>
+						<span className='text-black-40'>
+							{runeToMint.mints} / {runeToMint.terms_cap} minted
+						</span>
+					</div>
+				</div>
+			)}
+
+			<div className='flex flex-col gap-[1rem] w-full grow'>
+				<VTextInput
+					name='runeTicker'
+					label='Rune Ticker*'
+					placeholder='Select any ticker from the table'
+					onChange={e => {
+						const text = e.target.value;
+						fetchDetails(text.replaceAll('•', ''));
+
+						setValue('runeTicker', fixRuneTickerInput(text), {
+							shouldDirty: true, shouldValidate: true, shouldTouch: true
+						})
+					}}
+					rightElement={isLoading && <Loader />}
+				/>
+
+				<VTextInput
+					name='repeatMint'
+					label='Repeat Mint*'
+					placeholder='Enter repeat mint'
+				/>
+			</div>
+		</>
+	)
+}
+
+const Loader = () => <div className='animate-ping size-[0.5rem] rounded-full bg-white/50 light:bg-black/50' />
