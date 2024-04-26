@@ -35,7 +35,7 @@ export const VTextInput = forwardRef<HTMLInputElement, VTextInputProps>(({
 				...rootProps,
 				className: cn(
 					'items-center',
-					error && 'border-error shadow-error-default [&:has(input:focus)]:bg-black-100',
+					error && 'border-error shadow-error-default [&:has(input:focus)]:bg-error/20',
 					rootProps?.className
 				)
 			}}

@@ -1,5 +1,5 @@
 import { keepPreviousData, queryOptions, useQuery } from "@tanstack/react-query";
-import { mapRuneDto } from "./dto";
+import { mapRuneDetailsDto } from "./dto";
 
 export const fetchDetails = async (runeName: string) => {
 	const res = await fetch(`/api/runes/${runeName}`);
@@ -9,7 +9,7 @@ export const fetchDetails = async (runeName: string) => {
 		throw new Error(body)
 
 	const runeData = body.data.data;
-	return runeData ? mapRuneDto(runeData) : null;
+	return runeData ? mapRuneDetailsDto(runeData) : null;
 }
 
 const getOptions = (runeName: string) =>

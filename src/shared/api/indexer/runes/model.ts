@@ -5,7 +5,7 @@ export interface Rune {
 	burned: string,
 	divisibility: number,
 	etching: string,
-	terms_amount: string,
+	terms_amount: number,
 	terms_cap: number,
 	terms_height_l: string | null,
 	terms_height_h: string | null,
@@ -24,4 +24,17 @@ export interface Rune {
 	last_updated_block_height: number,
 
 	progress: number
+}
+
+export interface RuneDetails extends Rune {
+	supply: number,
+	mint_start_block: number,
+	mint_end_block: number
+}	
+
+export interface RuneHolder {
+	pkscript: string
+	rune_id: string
+	total_balance: number
+	wallet_addr: string
 }
