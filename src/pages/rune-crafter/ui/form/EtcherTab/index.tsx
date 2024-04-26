@@ -8,6 +8,7 @@ import { useFormValidation } from "./validation";
 import { FormProvider } from "react-hook-form";
 import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
 import { useFieldValue } from "~/shared/lib/useFieldValue";
+import { fixRuneTickerInput } from "../schemaRuneTicker";
 
 export function EtcherTab() {
 	const methods = useFormValidation();
