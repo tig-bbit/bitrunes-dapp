@@ -24,6 +24,8 @@ export function useFormValidation() {
 		mode: 'onChange',
 		defaultValues: {
 			runeName: '',
+			runeSymbol : '',
+			destAddress : '',
 			divisibility: 0,
 			premine: 0,
 			mintType: 'open',
