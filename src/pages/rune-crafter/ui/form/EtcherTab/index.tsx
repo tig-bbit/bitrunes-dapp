@@ -16,6 +16,7 @@ import {
 } from "~/hooks";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
+import { fixRuneTickerInput } from "../schemaRuneTicker";
 
 export function EtcherTab() {
 	const methods = useFormValidation();
