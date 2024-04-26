@@ -12,7 +12,7 @@ export async function DetailsSection({ details }: { details: RuneDetails }) {
 			<div className='flex flex-col gap-[1.5rem] w-full'>
 				<div className='flex gap-[1rem] justify-between items-center w-full max-md:flex-col'>
 					<div className='flex gap-[1rem] max-md:flex-col max-md:items-center w-full'>
-						<span className='size-[4.25rem] text-[3.25rem]'>
+						<span className='text-center size-[4.25rem] text-[3.25rem]'>
 							{details.symbol}
 						</span>
 

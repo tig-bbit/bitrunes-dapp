@@ -62,8 +62,8 @@ export function ImageUploader({ className, label, onChange, ...props }: ImageUpl
 
 			{imagePreview && (
 				<Button
-					className='absolute top-1 right-1 w-min rounded-full'
-					variant='ghost' size='icon'
+					className='absolute top-1 right-1 w-min rounded-full bg-black/50 text-white/50'
+					variant='unstyled' size='icon'
 					onClick={() => changePreview(null)}
 				>
 					<X />

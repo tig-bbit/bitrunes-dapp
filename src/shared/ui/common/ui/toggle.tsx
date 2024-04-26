@@ -21,7 +21,7 @@ const toggleVariants = cva([
 			]
 		},
 		size: {
-			default: "h-[2.3125rem] px-[1rem] py-[0.5rem] rounded-[0.88rem] w-full",
+			default: "h-[2.3125rem] px-[1rem] max-md:px-[0.5rem] py-[0.5rem] rounded-[0.88rem] w-full",
 		},
 	},
 	defaultVariants: {

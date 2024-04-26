@@ -68,6 +68,8 @@ function RuneControls() {
 		setValue('runeTicker', runeTicker, {
 			shouldDirty: true, shouldValidate: true, shouldTouch: true
 		});
+
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}, [runeTicker, setValue]);
 
 	const fetchDetails = useDebounce(async (runeName: string) => {

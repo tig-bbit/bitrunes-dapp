@@ -58,7 +58,7 @@ function SorterButton<T extends string>({ field, children, className, ...props }
 		<Button
 			variant='ghost'
 			{...props}
-			className={cn('sorter-button', currentSortDir, className)}
+			className={cn('sorter-button rounded-lg', currentSortDir, className)}
 			onClick={() => {
 				setParams({
 					sortBy: field,
