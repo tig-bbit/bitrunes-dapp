@@ -3,24 +3,30 @@
 import { cn } from "~/shared/lib/utils";
 import { Icons } from "../icons";
 import { HTMLAttributes, useState } from "react";
+import { Button } from "../common";
+import { X } from "lucide-react";
 
-interface ImageUploaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
+export interface ImageUploaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
 	label: string
-	onChange?: (image: File) => void
+	onChange?: (image: File | null) => void
 }
 
 export function ImageUploader({ className, label, onChange, ...props }: ImageUploaderProps) {
 	const [imagePreview, setImagePreview] = useState<string | null>();
 
+	const changePreview = (image: File | null) => {
+		setImagePreview(image ? URL.createObjectURL(image) : null);
+		onChange?.(image);
+	}
+
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
-		if(!file)
+		if (!file)
 			return;
 
-		setImagePreview(URL.createObjectURL(file));
-		onChange?.(file);
+		changePreview(file)
 	};
-	
+
 	return (
 		<div
 			{...props}
@@ -53,6 +59,16 @@ export function ImageUploader({ className, label, onChange, ...props }: ImageUpl
 				type='file'
 				onChange={handleFileChange}
 			/>
+
+			{imagePreview && (
+				<Button
+					className='absolute top-1 right-1 w-min rounded-full'
+					variant='ghost' size='icon'
+					onClick={() => changePreview(null)}
+				>
+					<X />
+				</Button>
+			)}
 		</div>
 	);
 }

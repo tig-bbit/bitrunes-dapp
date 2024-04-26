@@ -22,7 +22,8 @@ const buttonVariants = cva([
 				'light:hocus:bg-black/5'
 			],
 			ghost: [
-
+				'hocus:bg-black/50 text-white',
+				'light:text-black hocus:bg-white/50'
 			],
 			dropdown: [
 				'z-dropdown relative bg-white/10 text-white'

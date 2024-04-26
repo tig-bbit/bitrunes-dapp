@@ -1,12 +1,11 @@
 'use client';
 
-import { ImageUploader } from "~/shared/ui/image-uploader";
 import { InputHint } from "../../inputs/Hint";
 import { VTextInput } from "../../inputs/VTextInput";
 import { Button, ToggleGroupItem } from "~/shared/ui/common";
 import { useFormValidation } from "./validation";
 import { FormProvider } from "react-hook-form";
-import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
+import { VImageUploader, VToggleGroupRadio } from "~/shared/ui/validation-controls";
 import { useFieldValue } from "~/shared/lib/useFieldValue";
 import { fixRuneTickerInput } from "../schemaRuneTicker";
 
@@ -45,9 +44,9 @@ export function EtcherTab() {
 						/>
 					</div>
 
-					<ImageUploader
+					<VImageUploader
 						className='size-[7.875rem] shrink-0'
-						label='Rune Image'
+						label='Rune Image' name='image'
 					/>
 				</div>
 
