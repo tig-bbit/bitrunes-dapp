@@ -68,6 +68,8 @@ function RuneControls() {
 		setValue('runeTicker', runeTicker, {
 			shouldDirty: true, shouldValidate: true, shouldTouch: true
 		});
+
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}, [runeTicker, setValue]);
 
 	const fetchDetails = useDebounce(async (runeName: string) => {
@@ -124,4 +126,4 @@ function RuneControls() {
 	)
 }
 
-const Loader = () => <div className='animate-ping size-[0.5rem] rounded-full bg-white/50 light:bg-black/50' />
+const Loader = () => <div className='animate-ping size-[0.5rem] rounded-full bg-white/50 light:bg-black/50 mx-[0.5rem]' />

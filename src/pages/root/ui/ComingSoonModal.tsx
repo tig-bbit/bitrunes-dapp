@@ -15,7 +15,14 @@ import {
 export function ComingSoonModal() {
 	// yeah it's what nextjs or shadcn offering to do instead of defaultOpen={true}
 	const [open, setOpen] = useState(false);
-	useEffect(() => setOpen(true), [setOpen]);
+
+	useEffect(() => {
+		const alertShown = localStorage.getItem('alertShown');
+		if(!alertShown) {
+			localStorage.setItem('alertShown', 'true');
+			setOpen(true)
+		}
+	}, [setOpen]);
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>

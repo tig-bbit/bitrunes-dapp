@@ -26,13 +26,11 @@ export function Table() {
 				/>
 			</div>
 
-			<div className='w-full max-w-full overflow-x-auto grow'>
-				<IndexerHydrationBoundary
-					prefetchCallback={prefetchRuneTickersQuery}
-				>
-					<TableContent />
-				</IndexerHydrationBoundary>
-			</div>
+			<IndexerHydrationBoundary
+				prefetchCallback={prefetchRuneTickersQuery}
+			>
+				<TableContent />
+			</IndexerHydrationBoundary>
 		</PagePaper>
 	);
 }

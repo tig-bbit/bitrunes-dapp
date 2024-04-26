@@ -1,23 +1,16 @@
 'use client';
 
 import {
-	Pagination,
-	PaginationContent,
-	PaginationEllipsis,
-	PaginationItem,
-	PaginationLink,
-	PaginationNext,
-	PaginationPrevious,
 	Progress,
 	Skeleton
 } from "~/shared/ui/common";
 
 import { useState } from "react";
 import { Rune, useRuneHoldersQuery } from "~/shared/api/indexer";
-import { generatePaginationSequence } from "~/shared/lib/pagination";
 import { truncateStrFromMiddle } from "~/shared/lib/truncate";
 import { cn } from "~/shared/lib/utils";
 import { PagePaper } from "~/shared/ui/layout";
+import { Paginator } from "~/shared/ui/paginator";
 
 const columns = [
 	{
@@ -53,19 +46,8 @@ export function HoldersSection({ rune }: { rune: Rune }) {
 	const { data, isFetching } = useRuneHoldersQuery({
 		runeName: rune.rune_name_wo_spacers, page, limit
 	});
-	const lastPage = Math.floor(data?.total / limit);
 
-	const checkCanChangePage = (diff: 1 | -1) => {
-		const newPage = page + diff;
-		return newPage > 0 && newPage < lastPage;
-	}
-
-	const handleChangePage = (diff: 1 | -1) => {
-		if (!checkCanChangePage(diff))
-			return;
-
-		setPage(p => p + diff);
-	}
+	const total = data?.total;
 
 	return (
 		<PagePaper className='items-start p-[1.5rem] h-full gap-[1rem]'>
@@ -73,8 +55,8 @@ export function HoldersSection({ rune }: { rune: Rune }) {
 				Top Holders
 			</h1>
 
-			<div className='w-full max-w-full overflow-x-auto grow'>
-				<div 
+			<div className='w-full max-w-full overflow-x-auto grow gap-[1.5rem]'>
+				<div
 					className='flex flex-col gap-[1.5rem] grow w-full'
 					style={{ width: 'max(100%, 50rem)' }}
 				>
@@ -141,47 +123,16 @@ export function HoldersSection({ rune }: { rune: Rune }) {
 							))
 						)}
 					</div>
-
-					<Pagination>
-						<PaginationContent className='justify-between w-full pb-2'>
-							<PaginationItem>
-								<PaginationPrevious
-									onClick={() => handleChangePage(-1)}
-									disabled={!checkCanChangePage(-1) || isFetching}
-								/>
-							</PaginationItem>
-
-							{!isNaN(lastPage) && (
-								<div className='flex gap-[0.5rem]'>
-									{generatePaginationSequence(page, lastPage).map((p, index) => (
-										p == '...' ? (
-											<PaginationItem key={index}>
-												<PaginationEllipsis />
-											</PaginationItem>
-										) : (
-											<PaginationItem key={index}>
-												<PaginationLink
-													isActive={page == p}
-													onClick={() => setPage(p)}
-													disabled={isFetching}
-												>
-													{p}
-												</PaginationLink>
-											</PaginationItem>
-										)
-									))}
-								</div>
-							)}
-							<PaginationItem>
-								<PaginationNext
-									onClick={() => handleChangePage(+1)}
-									disabled={!checkCanChangePage(+1) || isFetching}
-								/>
-							</PaginationItem>
-						</PaginationContent>
-					</Pagination>
 				</div>
 			</div>
+
+			{total && total > limit && (
+				<Paginator
+					value={page} onChange={setPage}
+					totalItems={total} limit={limit}
+					disabled={isFetching}
+				/>
+			)}
 		</PagePaper>
 	);
 }

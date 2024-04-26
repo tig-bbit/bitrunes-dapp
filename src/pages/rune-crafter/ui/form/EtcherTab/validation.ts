@@ -14,6 +14,7 @@ const schema = z.object({
 	mintType: z.enum(['open', 'closed']),
 	mintAmount: z.coerce.number().int().optional(),
 	mintCap: z.coerce.number().int().optional(),
+	image: z.instanceof(File)
 })
 
 export function useFormValidation() {

@@ -1,19 +1,9 @@
-"use client"
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren } from "react";
 import { cn } from "~/shared/lib/utils";
 import { ComingSoonModal } from "./ComingSoonModal";
 import { Header } from "./Header";
 
 export function Page({ children }: PropsWithChildren) {
-	const [alertshow, setAlertShow] = useState(false);
-	useEffect(() => {
-		const alertShown = localStorage.getItem('alertShown');
-
-		if (!alertShown) {
-			setAlertShow(true);
-			localStorage.setItem('alertShown', 'true');
-		}
-	}, []);
 	return (
 		<main className={cn(
 			'flex flex-col gap-[1rem] max-w-[90rem] m-auto h-full font-inter',
@@ -24,11 +14,8 @@ export function Page({ children }: PropsWithChildren) {
 			<div className='grow'>
 				{children}
 			</div>
-			{alertshow ?
-				<ComingSoonModal />
-				:
-				''
-			}
+
+			<ComingSoonModal />
 		</main>
 	);
 }

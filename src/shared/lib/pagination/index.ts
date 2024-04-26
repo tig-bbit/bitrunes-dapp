@@ -25,8 +25,8 @@ export const generatePaginationSequence = (currentPage: number, pageCount: numbe
 	if (size % 2 === 0)
 		size += 1;
 
-	if (size < 5)
-		size = 5;
+	if (size < 7)
+		size = 7;
 
 	const offset = (size - 1) / 2;
 	const shouldAddDots = pageCount > size;
