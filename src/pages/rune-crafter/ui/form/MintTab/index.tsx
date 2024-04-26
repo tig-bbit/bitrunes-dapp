@@ -124,4 +124,4 @@ function RuneControls() {
 	)
 }
 
-const Loader = () => <div className='animate-ping size-[0.5rem] rounded-full bg-white/50 light:bg-black/50' />
+const Loader = () => <div className='animate-ping size-[0.5rem] rounded-full bg-white/50 light:bg-black/50 mx-[0.5rem]' />
