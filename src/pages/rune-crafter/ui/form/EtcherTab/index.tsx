@@ -32,9 +32,9 @@ export function EtcherTab() {
 							className="uppercase"
 							rightElement={<InputHint text='Names consist of letters A-Z and are between 13 & 28 characters long. They may contain spacers, represented as bullets • , to aid readability' />}
 							onChange={e => {
-								methods.setValue('runeName', fixRuneTickerInput(e.target.value), {
-									shouldDirty: true, shouldValidate: true, shouldTouch: true
-								})
+								let updatedValue = e.target.value.replaceAll(' ', '•');
+								updatedValue = updatedValue.replaceAll("••", '•');
+								methods.setValue('runeName', updatedValue)
 							}}
 						/>
 
