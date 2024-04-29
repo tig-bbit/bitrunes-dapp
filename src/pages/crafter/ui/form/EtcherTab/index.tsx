@@ -7,13 +7,64 @@ import { useFormValidation } from "./validation";
 import { FormProvider } from "react-hook-form";
 import { VImageUploader, VToggleGroupRadio } from "~/shared/ui/validation-controls";
 import { useFieldValue } from "~/shared/lib/useFieldValue";
+import {
+	useGasFees,
+	useGetOrderDetails,
+} from "~/hooks";
+import { useEffect, useState } from "react";
 import { fixRuneTickerInput } from "../schemaRuneTicker";
 
 export function EtcherTab() {
 	const methods = useFormValidation();
+	const { fees: mempoolFeeRate, getFees } = useGasFees();
+	const {
+		getOrderDetails,
+		estimateRuneData,
+		getEstimateOrderDetails,
+	} = useGetOrderDetails();
+	const [ismintable, setIsMintable] = useState(true);
 
 	const onSubmit = methods.handleSubmit(values => {
 		alert(JSON.stringify(values, undefined, 4));
+		if (!localStorage.getItem('ordinalAddress')) {
+			alert("Connect wallet");
+			return;
+		}
+		const ordinalAddress = localStorage.getItem('ordinalAddress');
+
+		//   if (ismintable && (!form.getValues().amount || !form.getValues().cap)) {
+		// 	toast.error("Please fill mandatory fields!");
+		// 	console.log("missing fields");
+		// 	return;
+		//   }
+		getFees();
+
+		if (!mempoolFeeRate) {
+			alert("Fee rate not available");
+			return;
+		}
+		const rune = {
+			runeName: values.runeName.toUpperCase(),
+			isMintable : ismintable,
+			feeRate: mempoolFeeRate?.fastestFee,
+			destinationAddress: values.destAddress,
+			...(values.runeSymbol && { symbol: values.runeSymbol }),
+			...(values.premine && { premine: values.premine }),
+			...(values.divisibility && {
+				divisibility: parseInt(values.divisibility.toString()),
+			}),
+			...(values.mintAmount &&
+				values.mintCap && {
+				terms: { amount: values.mintAmount, cap: values.mintCap },
+			}),
+		};
+		getEstimateOrderDetails(rune);
+		if (estimateRuneData) {
+			getOrderDetails({
+				...rune, 
+				refundAddress: ordinalAddress!,	
+			});
+		}
 	});
 
 	return (
@@ -67,7 +118,7 @@ export function EtcherTab() {
 					/>
 				</div>
 
-				<MintOptions />
+				<MintOptions setState={setIsMintable} />
 
 				<div className='flex flex-col gap-[1rem] w-full grow justify-end'>
 					<div className='flex gap-[1rem] w-full jsutify-between'>
@@ -75,7 +126,7 @@ export function EtcherTab() {
 						<span>102 Sats/vByte</span>
 					</div>
 
-					<Button colorPallete='primary'>
+					<Button type="submit" colorPallete='primary'>
 						Etch Rune
 					</Button>
 				</div>
@@ -83,10 +134,18 @@ export function EtcherTab() {
 		</FormProvider>
 	);
 }
-
-function MintOptions() {
+interface Props {
+	setState: (isVisible : boolean) => void;
+  }
+function MintOptions({setState} : Props) {
 	const tab = useFieldValue({ name: 'mintType' })
 
+	useEffect(() => {
+		if(tab == 'open')
+			setState(true);
+		else
+			setState(false);
+	}, [tab])
 	return (
 		<div className='flex flex-col gap-[1rem] w-full'>
 			<VToggleGroupRadio
