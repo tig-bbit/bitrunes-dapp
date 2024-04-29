@@ -30,7 +30,6 @@ export function EtcherTab() {
 			alert("Connect wallet");
 			return;
 		}
-		console.log("OrdinalAddress --- " , localStorage.getItem('ordinalAddress'))
 		const ordinalAddress = localStorage.getItem('ordinalAddress');
 
 		//   if (ismintable && (!form.getValues().amount || !form.getValues().cap)) {
@@ -40,10 +39,8 @@ export function EtcherTab() {
 		//   }
 		getFees();
 
-		console.log('Fees --- ', getFees());
 		if (!mempoolFeeRate) {
 			alert("Fee rate not available");
-			console.log("no fee rate");
 			return;
 		}
 		const rune = {
@@ -61,15 +58,12 @@ export function EtcherTab() {
 				terms: { amount: values.mintAmount, cap: values.mintCap },
 			}),
 		};
-		console.log("rune --- ", rune);
 		getEstimateOrderDetails(rune);
-		console.log('EstimateOrderDetails --- ', getEstimateOrderDetails(rune));
 		if (estimateRuneData) {
 			getOrderDetails({
-				...rune,
-				refundAddress: ordinalAddress,
+				...rune, 
+				refundAddress: ordinalAddress!,	
 			});
-			console.log('GetOrderDetails --- ', getOrderDetails);
 		}
 	});
 

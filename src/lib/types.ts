@@ -27,11 +27,11 @@ export interface Rune {
   destinationAddress: string;
   divisibility?: number;
   symbol?: string;
-  premine?: string;
+  premine?: number;
   isMintable: boolean;
   terms?: {
-    amount: string;
-    cap: string;
+    amount: number;
+    cap: number;
   };
 }
 

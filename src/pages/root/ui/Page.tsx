@@ -1,5 +1,5 @@
 "use client"
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren} from "react";
 import { cn } from "~/shared/lib/utils";
 import { ComingSoonModal } from "./ComingSoonModal";
 import { Header } from "./Header";
