@@ -7,6 +7,7 @@ import { fontManrope } from "~/shared/assets/fonts/manrope";
 import { ThemeProvider } from "./_theme";
 import { PageRoot } from "~/pages/root";
 import TanstackQueryProvider from "./_providers";
+import { Toaster } from "~/shared/ui/common";
 
 export const metadata: Metadata = {
 	title: "BitRunes",
@@ -38,6 +39,8 @@ export default function RootLayout({
 						<PageRoot>
 							{children}
 						</PageRoot>
+
+						<Toaster />
 					</ThemeProvider>
 				</TanstackQueryProvider>
 			</body>

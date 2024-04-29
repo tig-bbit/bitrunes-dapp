@@ -17,6 +17,7 @@ import { ColorModeToggler } from './ColorModeToggler';
 import { usePathname } from 'next/navigation';
 import { BuyBruneButton } from './BuyBruneButton';
 import { NavButtonsStack } from './NavButtonsStack';
+import { ConnectBtcButton } from './ConectBtcButton';
 
 export function MobileDrawer() {
 	const [open, setOpen] = useState(false);
@@ -57,12 +58,7 @@ export function MobileDrawer() {
 
 				<DrawerFooter>
 					<div className='flex flex-col gap-[0.75rem] '>
-						<Button
-							className='w-full'
-							variant='outline' colorPallete='primary'
-						>
-							Connect BTC
-						</Button>
+						<ConnectBtcButton />
 
 						<BuyBruneButton />
 

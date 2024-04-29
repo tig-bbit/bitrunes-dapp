@@ -1,52 +1,59 @@
 'use client';
 
+import {
+	fetchFees,
+	useGetOrderDetails,
+} from "~/shared/lib/bitcoin";
+
 import { InputHint } from "../../inputs/Hint";
 import { VTextInput } from "../../inputs/VTextInput";
-import { Button, ToggleGroupItem } from "~/shared/ui/common";
+import { Button, ToggleGroupItem, useToast } from "~/shared/ui/common";
 import { useFormValidation } from "./validation";
 import { FormProvider } from "react-hook-form";
 import { VImageUploader, VToggleGroupRadio } from "~/shared/ui/validation-controls";
 import { useFieldValue } from "~/shared/lib/useFieldValue";
-import {
-	useGasFees,
-	useGetOrderDetails,
-} from "~/hooks";
-import { useEffect, useState } from "react";
 import { fixRuneTickerInput } from "../schemaRuneTicker";
+import { useBtcWallet } from "~/shared/lib/bitcoin";
 
 export function EtcherTab() {
+	const { toast } = useToast()
 	const methods = useFormValidation();
-	const { fees: mempoolFeeRate, getFees } = useGasFees();
+
 	const {
 		getOrderDetails,
 		estimateRuneData,
 		getEstimateOrderDetails,
 	} = useGetOrderDetails();
-	const [ismintable, setIsMintable] = useState(true);
 
-	const onSubmit = methods.handleSubmit(values => {
-		alert(JSON.stringify(values, undefined, 4));
-		if (!localStorage.getItem('ordinalAddress')) {
-			alert("Connect wallet");
+	const wallet = useBtcWallet();
+
+	const onSubmit = methods.handleSubmit(async values => {
+		let ordinalsAddress = wallet.ordinalsAddress;
+
+		if (!ordinalsAddress) {
+			const connectionResponse = await wallet.connectWallet();
+			if (!connectionResponse.ordinalsAddress)
+				return;
+
+			ordinalsAddress = connectionResponse.ordinalsAddress
+		}
+
+		const fees = await fetchFees();
+
+		if (!fees) {
+			toast({
+				variant: 'error',
+				title: 'Error',
+				description: 'Fee rate not available'
+			})
+
 			return;
 		}
-		const ordinalAddress = localStorage.getItem('ordinalAddress');
 
-		//   if (ismintable && (!form.getValues().amount || !form.getValues().cap)) {
-		// 	toast.error("Please fill mandatory fields!");
-		// 	console.log("missing fields");
-		// 	return;
-		//   }
-		getFees();
-
-		if (!mempoolFeeRate) {
-			alert("Fee rate not available");
-			return;
-		}
 		const rune = {
 			runeName: values.runeName.toUpperCase(),
-			isMintable : ismintable,
-			feeRate: mempoolFeeRate?.fastestFee,
+			isMintable: values.mintType !== 'closed',
+			feeRate: fees.fastestFee,
 			destinationAddress: values.destAddress,
 			...(values.runeSymbol && { symbol: values.runeSymbol }),
 			...(values.premine && { premine: values.premine }),
@@ -58,11 +65,13 @@ export function EtcherTab() {
 				terms: { amount: values.mintAmount, cap: values.mintCap },
 			}),
 		};
+
 		getEstimateOrderDetails(rune);
+
 		if (estimateRuneData) {
 			getOrderDetails({
-				...rune, 
-				refundAddress: ordinalAddress!,	
+				...rune,
+				refundAddress: ordinalsAddress!,
 			});
 		}
 	});
@@ -79,7 +88,6 @@ export function EtcherTab() {
 							name='runeName'
 							label='Rune Name*'
 							placeholder='Enter rune name'
-							className="uppercase"
 							rightElement={<InputHint text='Names consist of letters A-Z and are between 13 & 28 characters long. They may contain spacers, represented as bullets • , to aid readability' />}
 							onChange={e => {
 								methods.setValue('runeName', fixRuneTickerInput(e.target.value), {
@@ -118,7 +126,7 @@ export function EtcherTab() {
 					/>
 				</div>
 
-				<MintOptions setState={setIsMintable} />
+				<MintOptions />
 
 				<div className='flex flex-col gap-[1rem] w-full grow justify-end'>
 					<div className='flex gap-[1rem] w-full jsutify-between'>
@@ -134,18 +142,10 @@ export function EtcherTab() {
 		</FormProvider>
 	);
 }
-interface Props {
-	setState: (isVisible : boolean) => void;
-  }
-function MintOptions({setState} : Props) {
+
+function MintOptions() {
 	const tab = useFieldValue({ name: 'mintType' })
 
-	useEffect(() => {
-		if(tab == 'open')
-			setState(true);
-		else
-			setState(false);
-	}, [tab])
 	return (
 		<div className='flex flex-col gap-[1rem] w-full'>
 			<VToggleGroupRadio

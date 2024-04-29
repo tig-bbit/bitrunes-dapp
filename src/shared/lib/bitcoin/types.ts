@@ -21,7 +21,6 @@ export interface OrderDetails {
 }
 
 export interface Rune {
-
   feeRate: number;
   runeName: string;
   destinationAddress: string;

@@ -29,5 +29,5 @@ export const schemaRuneTicker = z.string()
 
 export function fixRuneTickerInput(text: string) {
 	// not covering all the cases but we need proper validation on backend if it reach us
-	return text.replace(/\s\s+/g, '').replaceAll(' ', '•').replaceAll('••', '•');
+	return text.replace(/\s\s+/g, '').replaceAll(' ', '•').replaceAll('••', '•').toUpperCase();
 }	

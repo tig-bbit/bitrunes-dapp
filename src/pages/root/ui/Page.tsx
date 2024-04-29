@@ -1,4 +1,5 @@
 "use client"
+
 import { PropsWithChildren} from "react";
 import { cn } from "~/shared/lib/utils";
 import { ComingSoonModal } from "./ComingSoonModal";
