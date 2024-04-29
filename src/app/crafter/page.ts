@@ -1,0 +1,1 @@
+export { PageRuneCrafter as default } from '~/pages/crafter';

@@ -1,1 +1,0 @@
-export { PageRuneCrafter as default } from '~/pages/rune-crafter';

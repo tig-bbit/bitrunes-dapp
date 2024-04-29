@@ -7,29 +7,24 @@ import { ColorModeToggler } from "./ColorModeToggler";
 import { MobileDrawer } from "./MobileDrawer";
 import { useWindowScroll } from "~/shared/lib/useWindowScroll";
 import { cn } from "~/shared/lib/utils";
-import Link from "next/link";
+
 import {
 	useWalletConnect,
-	useGasFees,
-	useGetOrderDetails,
-	useExecuteOrder,
 } from "~/hooks";
-import { useContext, useEffect } from "react";
-import { number } from "zod";
-import { DataContext } from "~/context/DataProvider";
+import { useEffect } from "react";
 
+import { BuyBruneButton } from "./BuyBruneButton";
+import { NavButtonsStack } from "./NavButtonsStack";
 
 export function Header() {
-	// const contexData = useContext(DataContext)
-	const { paymentAddress, ordinalsAddress, handleWalletConnect } = useWalletConnect();
+	const { ordinalsAddress, handleWalletConnect } = useWalletConnect();
 
 	const isScrolled = useWindowScroll({ threshold: 10 });
 	const handleChange = () => {
 		handleWalletConnect();
-		// contexData.setOrdinalsAddress(ordinalsAddress!)
 	}
 	useEffect(() => {
-		if(ordinalsAddress) {
+		if (ordinalsAddress) {
 			localStorage.setItem('ordinalAddress', ordinalsAddress);
 		} else {
 			localStorage.removeItem('ordinalAddress')
@@ -40,7 +35,11 @@ export function Header() {
 			'flex justify-between sticky top-2 py-[0.75rem] z-header max-md: transition-all border-transparent',
 			isScrolled && 'px-[1rem] bg-black/50 light:bg-white/50 backdrop-blur-lg border border-secondary rounded-[1rem]'
 		)}>
-			<HeaderLogo />
+			<div className='flex gap-[1.5rem] items-center'>
+				<HeaderLogo />
+
+				<NavButtonsStack className='max-sm:hidden' />
+			</div>
 
 			<div className='flex gap-[0.75rem] max-md:hidden'>
 				{ordinalsAddress ? (
@@ -48,14 +47,9 @@ export function Header() {
 						{ordinalsAddress.slice(0, 5)}...{ordinalsAddress.slice(-5)}
 					</Button>
 				) : (
-					<Button variant='outline' colorPallete='primary' onClick={handleChange}>Connect BTC</Button>
+					<Button  onClick={handleChange} variant='outline' colorPallete='primary'>Connect Wallet</Button>
 				)}
-				<Button
-					asChild variant='solid'
-					colorPallete='primary'
-				>
-					<Link href='/rune-crafter'>Buy $BRUNE</Link>
-				</Button>
+				<BuyBruneButton />
 
 				<ColorModeToggler />
 			</div>

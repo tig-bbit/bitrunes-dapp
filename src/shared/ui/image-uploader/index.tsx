@@ -3,25 +3,30 @@
 import { cn } from "~/shared/lib/utils";
 import { Icons } from "../icons";
 import { HTMLAttributes, useState } from "react";
-import Image from "next/image";
+import { Button } from "../common";
+import { X } from "lucide-react";
 
-interface ImageUploaderProps extends HTMLAttributes<HTMLDivElement> {
+export interface ImageUploaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
 	label: string
+	onChange?: (image: File | null) => void
 }
 
-export function ImageUploader({ className, label, ...props }: ImageUploaderProps) {
-	const [imagePrompt, setImagePrompt] = useState<File | null>(null);
+export function ImageUploader({ className, label, onChange, ...props }: ImageUploaderProps) {
 	const [imagePreview, setImagePreview] = useState<string | null>();
+
+	const changePreview = (image: File | null) => {
+		setImagePreview(image ? URL.createObjectURL(image) : null);
+		onChange?.(image);
+	}
+
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files && e.target.files[0]) {
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				setImagePreview(e.target?.result as string);
-			};
-			reader.readAsDataURL(e.target.files[0]);
-			setImagePrompt(e.target.files[0]);
-		}
+		const file = e.target.files?.[0];
+		if (!file)
+			return;
+
+		changePreview(file)
 	};
+
 	return (
 		<div
 			{...props}
@@ -35,19 +40,18 @@ export function ImageUploader({ className, label, ...props }: ImageUploaderProps
 			)}
 		>
 			{imagePreview ? (
-				<Image
+				// eslint-disable-next-line @next/next/no-img-element
+				<img
 					src={imagePreview}
-					className="object-contain"
+					className="object-contain size-full"
 					alt="Preview"
-					width={124}
-					height={130}
 				/>
-			) :
+			) : (
 				<>
 					<Icons.UploadCloud className='size-[1.25rem]' />
 					<p className='w-min text-center'>{label}</p>
 				</>
-			}
+			)}
 
 			<input
 				accept='image/*'
@@ -55,6 +59,16 @@ export function ImageUploader({ className, label, ...props }: ImageUploaderProps
 				type='file'
 				onChange={handleFileChange}
 			/>
+
+			{imagePreview && (
+				<Button
+					className='absolute top-1 right-1 w-min rounded-full bg-black/50 text-white/50'
+					variant='unstyled' size='icon'
+					onClick={() => changePreview(null)}
+				>
+					<X />
+				</Button>
+			)}
 		</div>
 	);
 }

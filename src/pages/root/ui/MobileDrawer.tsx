@@ -13,9 +13,10 @@ import {
 import { HeaderLogo } from './HeaderLogo';
 import { useEffect, useState } from 'react';
 import { Menu as IconMenu, X as IconX } from 'lucide-react';
-import Link from 'next/link';
 import { ColorModeToggler } from './ColorModeToggler';
 import { usePathname } from 'next/navigation';
+import { BuyBruneButton } from './BuyBruneButton';
+import { NavButtonsStack } from './NavButtonsStack';
 
 export function MobileDrawer() {
 	const [open, setOpen] = useState(false);
@@ -37,16 +38,21 @@ export function MobileDrawer() {
 				</Button>
 			</DrawerTrigger>
 			<DrawerContent className='h-full'>
-				<DrawerHeader className='flex justify-between relative'>
-					<HeaderLogo />
+				<DrawerHeader className='flex flex-col gap-[3rem]'>
+					<div className='flex justify-between relative'>
+						<HeaderLogo />
 
-					<Button
-						variant='outline' className='rounded-md p-1'
-						onClick={() => setOpen(false)}
-					>
-						<IconX />
-					</Button>
+						<Button
+							variant='outline' className='rounded-md p-1'
+							onClick={() => setOpen(false)}
+						>
+							<IconX />
+						</Button>
+					</div>
 
+					<NavButtonsStack
+						className='flex-col items-start text-[1.5rem] font-semibold'
+					/>
 				</DrawerHeader>
 
 				<DrawerFooter>
@@ -58,12 +64,7 @@ export function MobileDrawer() {
 							Connect BTC
 						</Button>
 
-						<Button
-							asChild variant='solid'
-							colorPallete='primary'
-						>
-							<Link href='/rune-crafter'>Buy $BRUNE</Link>
-						</Button>
+						<BuyBruneButton />
 
 						<ColorModeToggler>
 							{theme => theme == 'dark' ? 'Light theme' : 'Dark theme'}
