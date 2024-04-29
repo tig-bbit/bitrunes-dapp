@@ -4,7 +4,7 @@ import { FeeToggle } from "../../inputs/FeeToggle";
 import { useFormValidation } from "./validation";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
-import { useRuneCrafterStore } from "~/pages/rune-crafter/model";
+import { useRuneCrafterStore } from "~/pages/crafter/model";
 import { useEffect, useState } from "react";
 import { fixRuneTickerInput } from "../schemaRuneTicker";
 import { fetchRuneDetails } from "~/shared/api/indexer";

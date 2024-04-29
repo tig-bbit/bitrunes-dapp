@@ -102,7 +102,7 @@ export function TableContent() {
 									>
 										<Link
 											className='hocus:text-primary transition-all'
-											href={`/rune-crafter/runes/${row.rune_name_wo_spacers}`}
+											href={`/crafter/runes/${row.rune_name_wo_spacers}`}
 										>
 											<div
 												className='flex gap-[0.5rem] items-center w-full max-w-full  shrink-0'
