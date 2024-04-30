@@ -57,7 +57,7 @@ export async function DetailsSection({ details }: { details: RuneDetails }) {
 								className='text-primary'
 								href={`https://mempool.space/tx/${details.etching}`}
 							>
-								{truncateStrFromMiddle(details.etching, 10)}
+								{truncateStrFromMiddle(details.etching)}
 							</a>
 						</DetailsRecord>
 						<DetailsRecord>

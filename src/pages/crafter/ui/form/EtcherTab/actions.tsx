@@ -5,11 +5,14 @@ import {
 } from "~/shared/lib/bitcoin";
 
 import { SchemaType } from "./validation";
-import { ApiErrorResponse } from "~/shared/lib/response";
 import { OrderDetails } from "~/shared/lib/bitcoin/types";
-import { useToast } from "~/shared/ui/common";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-const ErrorFeeNotAvailable = ApiErrorResponse('no-fee', { message: 'Fee rate not available' });
+const ErrorFeeNotAvailable = { type: 'no-fee', message: 'Fee rate not available' };
+
+export function isError(value: unknown): value is { type: string, message: string } {
+	return typeof value == 'object' && value !== null && 'type' in value && 'message' in value;
+}
 
 const buildOrder = async (values: SchemaType) => {
 	const fees = await fetchFees();
@@ -31,68 +34,79 @@ const buildOrder = async (values: SchemaType) => {
 	};
 }
 
-export function useGetOrderEstimateAction() {
-	return async (values: SchemaType) => {
-		const order = await buildOrder(values);
-		if (!order)
-			return ErrorFeeNotAvailable;
+interface UseOrderEstimatesQueryProps {
+	formData: SchemaType,
+	enabled?: boolean
+}
 
-		return await orderApiClient.getEstimateOrderDetails(order);
-	}
+export function useOrderEstimatesQuery({ formData, enabled }: UseOrderEstimatesQueryProps) {
+	return useQuery({
+		enabled,
+		queryKey: ['estimates'],
+		queryFn: async () => {
+			const order = await buildOrder(formData);
+			if (!order)
+				throw ErrorFeeNotAvailable;
+
+			const { data, error } = await orderApiClient.getEstimateOrderDetails(order);
+			if (error)
+				throw error;
+
+			return data;
+		},
+	});
 }
 
 export function useCreateOrderAction() {
 	const wallet = useBtcWallet();
 
-	return async (values: SchemaType) => {
+	const action = async (values: SchemaType) => {
 		let ordinalsAddress = wallet.ordinalsAddress;
 
 		if (!ordinalsAddress) {
 			const connectionResponse = await wallet.connectWallet();
 			if (!connectionResponse.ordinalsAddress)
-				return ApiErrorResponse('no-ordinals-address', { message: `Wallet is not conntected` });
+				throw { type: 'no-ordinals-address', message: `Wallet is not conntected` }
 
 			ordinalsAddress = connectionResponse.ordinalsAddress
 		}
 
 		const order = await buildOrder(values);
 		if (!order)
-			return ErrorFeeNotAvailable;
+			throw ErrorFeeNotAvailable;
 
-		return await orderApiClient.createOrder({
+		const { data, error } = await orderApiClient.createOrder({
 			...order,
 			refundAddress: ordinalsAddress!
 		});
+
+		if (error)
+			throw error;
+
+		return data;
 	}
+
+	return useMutation({ mutationFn: action });
 }
 
 export function useExecuteOrderAction() {
 	const wallet = useBtcWallet();
-	const { toast } = useToast();
 
-	return async (order: OrderDetails) => {
+	const action = async (order: OrderDetails) => {
 		const response = await wallet.pay(order.fundAddress, order.fundAmount);
 		if (!response)
-			return null;
+			throw { type: 'no-pay', message: 'Cannot pay' }
 
 		const orderId = order.orderId;
 		const transactionId = response.txid;
 
-		const executingResponse = await orderApiClient.executeOrder(orderId, transactionId);
+		const { data, error } = await orderApiClient.executeOrder(orderId, transactionId);
 
-		if(executingResponse.error) {
-			toast({
-				variant: 'error', title: 'Error',
-				description: executingResponse.error.message
-			})
-		}
-		else {
-			toast({
-				title: 'Success!',
-				description: 'Order executed successfully'
-			})
-		}
+		if (error)
+			throw error;
 
-		return executingResponse;
+		return data;
 	}
+
+	return useMutation({ mutationFn: action });
 }

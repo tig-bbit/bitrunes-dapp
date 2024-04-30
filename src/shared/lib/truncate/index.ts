@@ -5,7 +5,7 @@ interface Params {
 }
 
 export function truncateStrFromMiddle(
-	str: string, maxLength: number,
+	str: string, maxLength: number = 10,
 	{ separator = '...', frontCharsNumber = 5, backCharsNumber = 5 }: Params = {}
 ) {
 	if (str.length <= maxLength) return str;
