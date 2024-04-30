@@ -20,7 +20,7 @@ export function ConnectBtcButton(props: ButtonProps) {
 			}}
 		>
 			{isMounted ? (
-				ordinalsAddress ? `BTC: ${truncateStrFromMiddle(ordinalsAddress, 10)}` : 'Connect BTC'
+				ordinalsAddress ? `BTC: ${truncateStrFromMiddle(ordinalsAddress)}` : 'Connect BTC'
 			) : (
 				<Skeleton className='rounded-[1rem] h-full w-[7rem]' />
 			)}

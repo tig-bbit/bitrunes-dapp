@@ -1,20 +1,21 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { FeeEstimate } from "./types";
-import { useEffect, useState } from "react";
-import { BITCOIN_MEMPOOL_URL } from "~/shared/config/bitcoin";
+import { BITCOIN_MEMPOOL_API_URL } from "~/shared/config/bitcoin";
 
 export async function fetchFees() {
-	const response = await fetch(BITCOIN_MEMPOOL_URL);
+	const response = await fetch(BITCOIN_MEMPOOL_API_URL + '/fees/recommended');
+	if (!response.ok)
+		throw new Error();
+
 	return await response.json() as FeeEstimate;
 }
 
 export function useGasFees() {
-	const [fees, setFees] = useState<FeeEstimate | undefined>();
-
-	useEffect(() => {
-		fetchFees().then(setFees);
-	}, []);
-
-	return fees;
+	return useQuery({
+		queryFn: fetchFees,
+		queryKey: ['fees'],
+		refetchInterval: 10_000
+	})
 }

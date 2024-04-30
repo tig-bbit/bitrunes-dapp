@@ -1,12 +1,20 @@
 import { cn } from "~/shared/lib/utils"
 
+interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
+	loading?: boolean
+}
+
 function Skeleton({
 	className,
+	loading = true,
 	...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: SkeletonProps) {
 	return (
 		<div
-			className={cn("animate-pulse rounded-md bg-black/20 dark:bg-white/10", className)}
+			className={cn(
+				loading && "animate-pulse rounded-md bg-black/20 dark:bg-white/10 text-transparent [& *]:invisible", 
+				className
+			)}
 			{...props}
 		/>
 	)

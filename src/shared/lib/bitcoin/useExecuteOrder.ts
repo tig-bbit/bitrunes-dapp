@@ -1,6 +1,6 @@
 "use client";
 
-import { BITCOIN_NODE_URL } from "~/shared/config/bitcoin";
+import { BITCOIN_NODE_API_URL } from "~/shared/config/bitcoin";
 import { ExecuteOrderResponse } from "~/shared/lib/bitcoin/types";
 import { useState } from "react";
 import { useToast } from "~/shared/ui/common";
@@ -23,7 +23,7 @@ export function useExecuteOrder() {
 			return;
 		}
 		const response = await fetch(
-			`${BITCOIN_NODE_URL}/runes/etch/orders/${orderId}/execute`,
+			`${BITCOIN_NODE_API_URL}/runes/etch/orders/${orderId}/execute`,
 			{
 				method: "POST",
 				headers: {

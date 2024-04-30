@@ -89,7 +89,7 @@ export function HoldersSection({ rune }: { rune: Rune }) {
 										</div>
 
 										<div style={getColStyle(1)} title={row.wallet_addr}>
-											{truncateStrFromMiddle(row.wallet_addr, 10)}
+											{truncateStrFromMiddle(row.wallet_addr)}
 										</div>
 
 										<div style={getColStyle(2)}>

@@ -1,83 +1,38 @@
 'use client';
 
-import {
-	fetchFees,
-	useGetOrderDetails,
-} from "~/shared/lib/bitcoin";
-
 import { InputHint } from "../../inputs/Hint";
 import { VTextInput } from "../../inputs/VTextInput";
-import { Button, ToggleGroupItem, useToast } from "~/shared/ui/common";
-import { useFormValidation } from "./validation";
+import { Button, Skeleton, ToggleGroupItem } from "~/shared/ui/common";
+import { SchemaType, useFormValidation } from "./validation";
 import { FormProvider } from "react-hook-form";
 import { VImageUploader, VToggleGroupRadio } from "~/shared/ui/validation-controls";
 import { useFieldValue } from "~/shared/lib/useFieldValue";
 import { fixRuneTickerInput } from "../schemaRuneTicker";
-import { useBtcWallet } from "~/shared/lib/bitcoin";
+import { useGasFees } from "~/shared/lib/bitcoin";
+import { useState } from "react";
+import { OrderModal } from "./OrderModal";
+import { objectId } from "~/shared/lib/object-id";
 
 export function EtcherTab() {
-	const { toast } = useToast()
 	const methods = useFormValidation();
+	const [open, setOpen] = useState(false);
+	const [values, setValues] = useState<SchemaType | null>(null);
 
-	const {
-		getOrderDetails,
-		estimateRuneData,
-		getEstimateOrderDetails,
-	} = useGetOrderDetails();
-
-	const wallet = useBtcWallet();
-
-	const onSubmit = methods.handleSubmit(async values => {
-		let ordinalsAddress = wallet.ordinalsAddress;
-
-		if (!ordinalsAddress) {
-			const connectionResponse = await wallet.connectWallet();
-			if (!connectionResponse.ordinalsAddress)
-				return;
-
-			ordinalsAddress = connectionResponse.ordinalsAddress
-		}
-
-		const fees = await fetchFees();
-
-		if (!fees) {
-			toast({
-				variant: 'error',
-				title: 'Error',
-				description: 'Fee rate not available'
-			})
-
-			return;
-		}
-
-		const rune = {
-			runeName: values.runeName.toUpperCase(),
-			isMintable: values.mintType !== 'closed',
-			feeRate: fees.fastestFee,
-			destinationAddress: values.destAddress,
-			...(values.runeSymbol && { symbol: values.runeSymbol }),
-			...(values.premine && { premine: values.premine }),
-			...(values.divisibility && {
-				divisibility: parseInt(values.divisibility.toString()),
-			}),
-			...(values.mintAmount &&
-				values.mintCap && {
-				terms: { amount: values.mintAmount, cap: values.mintCap },
-			}),
-		};
-
-		getEstimateOrderDetails(rune);
-
-		if (estimateRuneData) {
-			getOrderDetails({
-				...rune,
-				refundAddress: ordinalsAddress!,
-			});
-		}
+	const onSubmit = methods.handleSubmit(values => {
+		setValues(values);
+		setOpen(true);
 	});
 
 	return (
 		<FormProvider {...methods}>
+			{values && (
+				<OrderModal
+					key={objectId(values)}
+					formData={values} open={open}
+					onOpenChange={setOpen}
+				/>
+			)}
+
 			<form
 				className='flex flex-col gap-[1rem] w-full grow'
 				onSubmit={onSubmit}
@@ -129,10 +84,7 @@ export function EtcherTab() {
 				<MintOptions />
 
 				<div className='flex flex-col gap-[1rem] w-full grow justify-end'>
-					<div className='flex gap-[1rem] w-full jsutify-between'>
-						<span className='text-black-60'>Est. Mempool Fee Rate</span>
-						<span>102 Sats/vByte</span>
-					</div>
+					<FeesInfo />
 
 					<Button type="submit" colorPallete='primary'>
 						Etch Rune
@@ -192,6 +144,20 @@ function MintOptions() {
 					</div> */}
 				</>
 			)}
+		</div>
+	);
+}
+
+function FeesInfo() {
+	const { data } = useGasFees();
+
+	return (
+		<div className='flex gap-[1rem] w-full justify-between'>
+			<span className='text-black-60'>Est. Mempool Fee Rate</span>
+
+			<Skeleton loading={!data}>
+				<span>{data?.fastestFee} Sats/vByte</span>
+			</Skeleton>
 		</div>
 	);
 }

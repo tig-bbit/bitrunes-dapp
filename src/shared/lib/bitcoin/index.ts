@@ -1,4 +1,4 @@
 export { useGasFees, fetchFees } from "./useGetFees";
 export { useBtcWallet } from "./useBtcWallet";
-export { useGetOrderDetails } from "./useGetOrderDetails";
+export { orderApiClient } from "./orderApiClient";
 export { useExecuteOrder } from "./useExecuteOrder";

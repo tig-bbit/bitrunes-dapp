@@ -5,10 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { schemaRuneTicker } from '../schemaRuneTicker';
 
-const schema = z.object({
+export const schema = z.object({
 	runeName: schemaRuneTicker,
 	runeSymbol: z.string().length(1, 'Only one symbol'),
-	destAddress: z.string().min(3),
+	destAddress: z.string().min(14, 'Min 14 symbols'),
 	divisibility: z.coerce.number().int().optional(),
 	premine: z.coerce.number().int().optional(),
 	mintType: z.enum(['open', 'closed']),
@@ -17,14 +17,13 @@ const schema = z.object({
 	image: z.instanceof(File)
 })
 
+export type SchemaType = z.infer<typeof schema>
+
 export function useFormValidation() {
-	return useForm({
+	return useForm<SchemaType>({
 		resolver: zodResolver(schema),
 		mode: 'onChange',
 		defaultValues: {
-			runeName: '',
-			runeSymbol : '',
-			destAddress : '',
 			divisibility: 0,
 			premine: 0,
 			mintType: 'open',
