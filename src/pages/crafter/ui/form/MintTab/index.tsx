@@ -1,9 +1,8 @@
-import { ToggleGroupItem, Button, Progress } from "~/shared/ui/common";
+import { Button, Progress } from "~/shared/ui/common";
 import { VTextInput } from "../../inputs/VTextInput";
 import { FeeToggle } from "../../inputs/FeeToggle";
 import { useFormValidation } from "./validation";
 import { FormProvider, useFormContext } from "react-hook-form";
-import { VToggleGroupRadio } from "~/shared/ui/validation-controls";
 import { useRuneCrafterStore } from "~/pages/crafter/model";
 import { useEffect, useState } from "react";
 import { fixRuneTickerInput } from "../schemaRuneTicker";
@@ -25,7 +24,7 @@ export function MintTab() {
 			>
 				<RuneControls />
 
-				<div className='flex flex-col gap-[0.5rem] w-full'>
+				{/* <div className='flex flex-col gap-[0.5rem] w-full'>
 					<span className='text-black-60 text-[0.875rem]'>
 						Minting Mode (Max)
 					</span>
@@ -40,7 +39,7 @@ export function MintTab() {
 							Auto Split (2500)
 						</ToggleGroupItem>
 					</VToggleGroupRadio>
-				</div>
+				</div> */}
 
 				<FeeToggle name='fee' />
 

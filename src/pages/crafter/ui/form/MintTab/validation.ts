@@ -8,7 +8,9 @@ import { schemaRuneTicker } from '../schemaRuneTicker';
 
 const schema = z.object({
 	runeTicker: schemaRuneTicker,
-	repeatMint: z.string().min(1, 'Min 1 char'),
+	repeatMint: z.coerce.number()
+		.min(1, 'Allowed value from 1 to 23')
+		.max(23, 'Allowed value from 1 to 23'),
 	split: z.enum(['pre-split', 'auto-split']),
 	fee: schemaFeeToggle,
 })
