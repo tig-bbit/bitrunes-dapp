@@ -12,7 +12,7 @@ function Skeleton({
 	return (
 		<div
 			className={cn(
-				loading && "animate-pulse rounded-md bg-black/20 dark:bg-white/10 text-transparent [& *]:invisible", 
+				loading && "animate-pulse rounded-lg bg-black/20 dark:bg-white/10 text-transparent [&_*]:invisible", 
 				className
 			)}
 			{...props}

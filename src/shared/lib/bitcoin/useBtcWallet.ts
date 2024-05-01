@@ -42,7 +42,7 @@ export function useBtcWallet() {
 		const { request } = await import("sats-connect");
 
 		const response = await request("sendTransfer", {
-			recipients: [{ address, amount }],
+			recipients: [{ address, amount }]
 		});
 
 		if (response.status === "success")

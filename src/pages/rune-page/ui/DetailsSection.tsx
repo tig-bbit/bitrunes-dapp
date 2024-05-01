@@ -126,7 +126,7 @@ function DetailsContainer({ children }: PropsWithChildren) {
 
 function DetailsRecord({ children }: PropsWithChildren) {
 	return (
-		<div className='flex w-full justify-between even:bg-white/[.04] px-[1rem] py-[0.3125rem] rounded-[0.625rem]'>
+		<div className='flex w-full justify-between even:bg-white/[.04] light:even:bg-black/[.04] px-[1rem] py-[0.3125rem] rounded-[0.625rem]'>
 			{children}
 		</div>
 	);

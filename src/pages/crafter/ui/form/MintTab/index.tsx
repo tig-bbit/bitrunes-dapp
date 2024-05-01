@@ -68,15 +68,25 @@ function RuneControls() {
 			shouldDirty: true, shouldValidate: true, shouldTouch: true
 		});
 
+		setValue('isValidRune', true);
+
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}, [runeTicker, setValue]);
 
 	const fetchDetails = useDebounce(async (runeName: string) => {
 		setIsLoader(true);
 
-		fetchRuneDetails(runeName)
-			.then(setRuneToMint)
-			.finally(() => setIsLoader(false))
+		try {
+			const details = await fetchRuneDetails(runeName)
+			setRuneToMint(details);
+			setValue('isValidRune', !!details);
+		}
+		catch {
+			setValue('isValidRune', false);
+		}
+		finally {
+			setIsLoader(false);
+		}
 	}, 500);
 
 	return (
