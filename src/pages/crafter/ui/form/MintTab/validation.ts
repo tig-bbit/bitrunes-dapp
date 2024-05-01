@@ -32,6 +32,7 @@ export function useFormValidation() {
 		mode: 'onChange',
 		defaultValues: {
 			runeTicker: '',
+			repeatMint: 1,
 			split: 'pre-split',
 			fee: { type: 'medium' }
 		}

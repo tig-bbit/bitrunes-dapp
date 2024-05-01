@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useMemo } from "react";
 import { useToast } from "~/shared/ui/common";
 
@@ -17,9 +19,9 @@ export function useMintRunes() {
 	const { toast } = useToast();
 
 	const getEstimateMint = useCallback(async (params: EstimateMintOrderRequest) => {
-		const { BitcoinNetworkType, request } = await import("sats-connect");
+		const { BitcoinNetworkType, default: Wallet } = await import("sats-connect");
 
-		const response = await request('runes_estimateMint', {
+		const response = await Wallet.request('runes_estimateMint', {
 			...params,
 			network: BitcoinNetworkType.Mainnet,
 		});
@@ -36,8 +38,8 @@ export function useMintRunes() {
 	}, [toast]);
 
 	const mint = useCallback(async (params: CreateMintOrderRequest) => {
-		const { BitcoinNetworkType, request } = await import("sats-connect");
-		const response = await request('runes_mint', {
+		const { BitcoinNetworkType, default: Wallet } = await import("sats-connect");
+		const response = await Wallet.request('runes_mint', {
 			...params,
 			network: BitcoinNetworkType.Mainnet,
 		});
