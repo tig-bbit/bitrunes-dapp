@@ -7,12 +7,9 @@ import {
 import { SchemaType } from "./validation";
 import { OrderDetails } from "~/shared/lib/bitcoin/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { AppError } from "../AppError";
 
-const ErrorFeeNotAvailable = { type: 'no-fee', message: 'Fee rate not available' };
-
-export function isError(value: unknown): value is { type: string, message: string } {
-	return typeof value == 'object' && value !== null && 'type' in value && 'message' in value;
-}
+const ErrorFeeNotAvailable: AppError = { type: 'no-fee', message: 'Fee rate not available' };
 
 const buildOrder = async (values: SchemaType) => {
 	const fees = await fetchFees();

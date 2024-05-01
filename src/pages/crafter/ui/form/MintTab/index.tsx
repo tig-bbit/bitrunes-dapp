@@ -77,11 +77,11 @@ function RuneControls() {
 		if (!runeTicker)
 			return;
 
+		setValue('isValidRune', true);
+
 		setValue('runeTicker', runeTicker, {
 			shouldDirty: true, shouldValidate: true, shouldTouch: true
 		});
-
-		setValue('isValidRune', true);
 
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}, [runeTicker, setValue]);

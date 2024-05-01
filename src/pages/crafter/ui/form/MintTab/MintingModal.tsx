@@ -8,38 +8,87 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	Skeleton
+	Skeleton,
+	useToast
 } from '~/shared/ui/common'
 
-import { ComponentPropsWithoutRef } from 'react';
+import { ComponentPropsWithoutRef, useEffect, useMemo, useState } from 'react';
 import { SchemaType } from './validation';
 import { useServiceFees } from '../../inputs/FeeToggle';
-import { useMintingEstimateQuery } from './actions';
+import { useMintAction, useMintingEstimateQuery } from './actions';
+import { isAppError } from '../AppError';
 
 interface OrderModalProps extends ComponentPropsWithoutRef<typeof Dialog> {
 	formData: SchemaType
 }
 
-export function MintingModal({ formData, ...props }: OrderModalProps) {
+export function MintingModal({ formData, open, ...props }: OrderModalProps) {
+	const { toast } = useToast();
 	const { data: fees } = useServiceFees();
-	const wantedFee = formData.fee;
-	const resolvedFee = wantedFee.type == 'custom' ? wantedFee.custom : fees.get(wantedFee.type) ?? 0;
+	const [satsModalPassed, setSatsModalPassed] = useState(false);
 
-	const { data: estimates } = useMintingEstimateQuery({ 
-		request: {
-			runeName: formData.runeTicker,	
+	const {
+		mutateAsync: executeMint,
+		isPending: isExecuteMintPending
+	} = useMintAction();
+
+	const request = useMemo(() => {
+		const wantedFee = formData.fee;
+		const resolvedFee = wantedFee.type == 'custom' ? wantedFee.custom : fees.get(wantedFee.type) ?? 0;
+
+		return {
+			runeName: formData.runeTicker,
 			feeRate: resolvedFee,
 			repeats: formData.repeatMint
-		}, 
-		enabled: props?.open 
+		}
+	}, [formData, fees]);
+
+	const { data: estimates } = useMintingEstimateQuery({
+		request, enabled: open
 	})
 
+	useEffect(() => {
+		if (estimates)
+			setSatsModalPassed(true);
+	}, [estimates])
+
+	const handleExecuteMintClick = async () => {
+		try {
+			await executeMint(request);
+		}
+		catch (error) {
+			if (isAppError(error)) {
+				toast({
+					variant: 'error', title: 'Error',
+					description: error.message
+				})
+			}
+		}
+		finally {
+			props?.onOpenChange?.(false);
+		}
+	}
+
 	return (
-		<Dialog {...props}>
+		<Dialog {...props} open={open && satsModalPassed}>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Estimates</DialogTitle>
 					<DialogDescription className='flex flex-col gap-[0.5rem] text-inherit'>
+						<div className='flex justify-between w-full gap-[1rem]'>
+							<span className='text-black-40'>Rune</span>
+							<Skeleton loading={!estimates}>
+								{formData.runeTicker}
+							</Skeleton>
+						</div>
+
+						<div className='flex justify-between w-full gap-[1rem]'>
+							<span className='text-black-40'>Repeat Mint</span>
+							<Skeleton loading={!estimates}>
+								{formData.repeatMint}
+							</Skeleton>
+						</div>
+
 						<div className='flex justify-between w-full gap-[1rem]'>
 							<span className='text-black-40'>Postage</span>
 							<Skeleton loading={!estimates}>
@@ -73,7 +122,7 @@ export function MintingModal({ formData, ...props }: OrderModalProps) {
 						<div className='flex justify-between w-full gap-[1rem]'>
 							<span className='text-black-40'>Est. Mempool Fee Rate (priority)</span>
 							<Skeleton loading={!fees}>
-								{resolvedFee ?? '0000'}
+								{request.feeRate ?? '0000'}
 							</Skeleton>
 						</div>
 					</DialogDescription>
@@ -81,6 +130,8 @@ export function MintingModal({ formData, ...props }: OrderModalProps) {
 				<DialogFooter className="md:justify-center">
 					<Button
 						variant='solid' colorPallete='primary'
+						onClick={handleExecuteMintClick}
+						disabled={isExecuteMintPending}
 					>
 						Execute Mint
 					</Button>

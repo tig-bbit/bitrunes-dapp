@@ -8,3 +8,5 @@ export {
 	type CreateMintOrderRequest,
 	type EstimateMintOrderRequest
 } from "./useMintRunes";
+
+import './styles.css';

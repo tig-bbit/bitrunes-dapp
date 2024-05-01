@@ -1,5 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { EstimateMintOrderRequest, useBtcWallet, useMintRunes } from "~/shared/lib/bitcoin";
+import {
+	EstimateMintOrderRequest,
+	CreateMintOrderRequest,
+	useBtcWallet,
+	useMintRunes
+} from "~/shared/lib/bitcoin";
+
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 interface UseMintingEstimateQueryProps {
 	request: Omit<EstimateMintOrderRequest, 'destinationAddress'>,
@@ -31,4 +37,30 @@ export function useMintingEstimateQuery({ request, enabled }: UseMintingEstimate
 			return estimates;
 		}
 	})
+}
+
+export function useMintAction() {
+	const wallet = useBtcWallet();
+	const { mint } = useMintRunes();
+
+	const action = async (values: Omit<CreateMintOrderRequest, 'destinationAddress' | 'refundAddress'>) => {
+		const {
+			ordinalsAddress: destinationAddress,
+			paymentAddress: refundAddress
+		} = await wallet.requireWalletAddresses();
+
+		if (!destinationAddress || !refundAddress)
+			throw { type: 'no-ordinals-address', message: `Wallet is not conntected` };
+
+		const order = await mint({
+			...values,
+			destinationAddress,
+			refundAddress
+		})
+
+		if (!order)
+			throw { type: 'no-order-result', message: `Could not perform order` };
+	}
+
+	return useMutation({ mutationFn: action });
 }

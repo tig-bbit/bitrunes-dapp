@@ -13,11 +13,11 @@ import {
 } from '~/shared/ui/common'
 
 import { 
-	isError, 
 	useCreateOrderAction, 
 	useExecuteOrderAction, 
 	useOrderEstimatesQuery 
 } from './actions';
+import { isAppError } from "../AppError";
 
 import { ComponentPropsWithoutRef, useState } from 'react';
 import { SchemaType } from './validation';
@@ -52,7 +52,7 @@ export function OrderModal({ formData, ...props }: OrderModalProps) {
 			setOrder(result);
 		}
 		catch (error: unknown) {
-			if (isError(error)) {
+			if (isAppError(error)) {
 				toast({
 					variant: 'error', title: 'Error',
 					description: error.message
@@ -76,7 +76,7 @@ export function OrderModal({ formData, ...props }: OrderModalProps) {
 			})
 		}
 		catch (error: unknown) {
-			if (isError(error)) {
+			if (isAppError(error)) {
 				toast({
 					variant: 'error', title: 'Error',
 					description: error.message
