@@ -61,15 +61,10 @@ export function useCreateOrderAction() {
 	const wallet = useBtcWallet();
 
 	const action = async (values: SchemaType) => {
-		let ordinalsAddress = wallet.ordinalsAddress;
+		const { ordinalsAddress } = await wallet.requireWalletAddresses();
 
-		if (!ordinalsAddress) {
-			const connectionResponse = await wallet.connectWallet();
-			if (!connectionResponse.ordinalsAddress)
-				throw { type: 'no-ordinals-address', message: `Wallet is not conntected` }
-
-			ordinalsAddress = connectionResponse.ordinalsAddress
-		}
+		if (!ordinalsAddress)
+			throw { type: 'no-ordinals-address', message: `Wallet is not conntected` };
 
 		const order = await buildOrder(values);
 		if (!order)

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useToast } from "~/shared/ui/common";
 
-type CreateMintOrderRequest = {
+export type CreateMintOrderRequest = {
 	runeName: string;
 	repeats: number;
 	refundAddress: string;
@@ -11,13 +11,14 @@ type CreateMintOrderRequest = {
 	appServiceFeeAddress?: string;
 };
 
-type EstimateMintOrderRequest = Omit<CreateMintOrderRequest, 'refundAddress'>;
+export type EstimateMintOrderRequest = Omit<CreateMintOrderRequest, 'refundAddress'>;
 
 export function useMintRunes() {
 	const { toast } = useToast();
 
 	const getEstimateMint = useCallback(async (params: EstimateMintOrderRequest) => {
 		const { BitcoinNetworkType, request } = await import("sats-connect");
+
 		const response = await request('runes_estimateMint', {
 			...params,
 			network: BitcoinNetworkType.Mainnet,

@@ -1,23 +1,36 @@
 import { Button, Progress } from "~/shared/ui/common";
 import { VTextInput } from "../../inputs/VTextInput";
 import { FeeToggle } from "../../inputs/FeeToggle";
-import { useFormValidation } from "./validation";
+import { SchemaType, useFormValidation } from "./validation";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { useRuneCrafterStore } from "~/pages/crafter/model";
 import { useEffect, useState } from "react";
 import { fixRuneTickerInput } from "../schemaRuneTicker";
 import { fetchRuneDetails } from "~/shared/api/indexer";
 import { useDebounce } from "~/shared/lib/debounce";
+import { MintingModal } from "./MintingModal";
+import { objectId } from "~/shared/lib/object-id";
 
 export function MintTab() {
 	const methods = useFormValidation();
+	const [open, setOpen] = useState(false);
+	const [values, setValues] = useState<SchemaType | null>(null);
 
 	const onSubmit = methods.handleSubmit(values => {
-		alert(JSON.stringify(values, undefined, 4));
+		setValues(values);
+		setOpen(true);
 	});
 
 	return (
 		<FormProvider {...methods}>
+			{values && (
+				<MintingModal
+					key={objectId(values)}
+					formData={values} open={open}
+					onOpenChange={setOpen}
+				/>
+			)}
+
 			<form
 				className='flex flex-col gap-[1.5rem] w-full grow justify-between'
 				onSubmit={onSubmit}

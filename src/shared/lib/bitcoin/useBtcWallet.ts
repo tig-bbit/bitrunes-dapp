@@ -37,6 +37,13 @@ export function useBtcWallet() {
 
 		return { paymentAddress, ordinalsAddress };
 	}, [setOrdinalsAddress, setPaymentAddress, toast]);
+	
+	const requireWalletAddresses = useCallback(async () => {
+		if(paymentAddress && ordinalsAddress)
+			return { paymentAddress, ordinalsAddress };
+
+		return await connectWallet();
+	}, [connectWallet, paymentAddress, ordinalsAddress]);
 
 	const pay = useCallback(async (address: string, amount: number) => {
 		const { request } = await import("sats-connect");
@@ -56,6 +63,6 @@ export function useBtcWallet() {
 	}, [toast])
 
 	return useMemo(() => ({
-		paymentAddress, ordinalsAddress, connectWallet, pay
-	}), [paymentAddress, ordinalsAddress, connectWallet, pay])
+		paymentAddress, ordinalsAddress, connectWallet, requireWalletAddresses, pay,
+	}), [paymentAddress, ordinalsAddress, connectWallet, requireWalletAddresses, pay])
 }

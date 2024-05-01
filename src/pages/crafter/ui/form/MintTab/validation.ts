@@ -15,7 +15,7 @@ const schema = z.object({
 	split: z.enum(['pre-split', 'auto-split']),
 	fee: schemaFeeToggle,
 }).superRefine((obj, ctx) => {
-	if(!obj.isValidRune) {
+	if (!obj.isValidRune) {
 		ctx.addIssue({
 			code: z.ZodIssueCode.custom,
 			message: 'Invalid rune',
@@ -27,13 +27,13 @@ const schema = z.object({
 export type SchemaType = z.infer<typeof schema>
 
 export function useFormValidation() {
-	return useForm({
+	return useForm<SchemaType>({
 		resolver: zodResolver(schema),
 		mode: 'onChange',
 		defaultValues: {
 			runeTicker: '',
 			split: 'pre-split',
-			'fee.type': 'medium'
+			fee: { type: 'medium' }
 		}
 	})
 }
