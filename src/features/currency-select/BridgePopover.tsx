@@ -4,7 +4,6 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Input,
 } from "~/shared/ui/common";
 
 import { useEffect, useState } from "react";

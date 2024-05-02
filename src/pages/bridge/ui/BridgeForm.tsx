@@ -3,13 +3,12 @@
 import { Button, Form } from "~/shared/ui/common";
 import { useForm } from "react-hook-form";
 import { Icons } from "~/shared/ui/icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { BridgeTo } from "./BridgeTo";
 import { BridgeFrom } from "./BridgeFrom";
 import { useEffect, useState } from "react";
 import {
-  createTransaction,
-  fetchCurrencyList,
+  // createTransaction,
   fetchEstimateAmount,
   fetchMinimalExchange,
 } from "../api/change-now";
@@ -107,17 +106,17 @@ const defaultCNValue = {
   error: "",
 };
 
-type TTXValue = {
-  payOutAddress: string;
-  txId: string;
-  status: string;
-}
+// type TTXValue = {
+//   payOutAddress: string;
+//   txId: string;
+//   status: string;
+// }
 
-const defaultTxValue = {
-  payOutAddress: "",
-  txId: "",
-  status: ""
-}
+// const defaultTxValue = {
+//   payOutAddress: "",
+//   txId: "",
+//   status: ""
+// }
 
 export function BridgeForm() {
   const form = useForm();
@@ -125,7 +124,7 @@ export function BridgeForm() {
   const [switchBridge, setSwitchBridge] = useState<boolean>(true);
   const [formValue, setFormValue] = useState<TBridgeForm>(defaultBridgeForm);
   const [cnValue, setCNValue] = useState<TCNValue>(defaultCNValue);
-  const [txValue, setTxValue] = useState<TTXValue>(defaultTxValue)
+  // const [txValue, setTxValue] = useState<TTXValue>(defaultTxValue)
 
   const handleChangeBridge = () => {
     setSwitchBridge(!switchBridge);
@@ -141,14 +140,15 @@ export function BridgeForm() {
     mutationFn: fetchEstimateAmount,
   });
 
-  const createTxMutate = useMutation({
-    mutationKey: ["create-exchange-transaction"],
-    mutationFn: createTransaction,
-  });
+  // const createTxMutate = useMutation({
+  //   mutationKey: ["create-exchange-transaction"],
+  //   mutationFn: createTransaction,
+  // });
 
   const onSubmit = form.handleSubmit(async data => {
     try {
       // const exchangeTx = await createTxMutate.mutateAsync(formValue.fromCurrency,formValue.toCurrency, )
+      console.log(data)
     } catch (error) {
 
     }
