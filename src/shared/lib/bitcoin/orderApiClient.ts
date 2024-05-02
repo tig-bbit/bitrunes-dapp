@@ -2,9 +2,11 @@
 
 import {
 	OrderDetails,
+	OrderDetailsError,
 	OrderRune,
 	Rune,
 	RuneTransactionEstimate,
+	RuneTransactionEstimateError,
 } from "./types";
 
 import { BITCOIN_NODE_API_URL } from "../../config/bitcoin";
@@ -20,8 +22,17 @@ export const orderApiClient = {
 			body: JSON.stringify(rune),
 		});
 
-		if (!response.ok)
+		if (!response.ok) {
+			const error = await response.json() as RuneTransactionEstimateError;
+
+			if (error.details) {
+				return ApiErrorResponse('validation-error', { 
+					message: error.details.errors.map(e => e.message).join('\n') 
+				})
+			}
+
 			return UnknownApiError
+		}
 
 		const data = await response.json() as RuneTransactionEstimate;
 		return ApiOkResponse('estimate', data);
@@ -35,8 +46,23 @@ export const orderApiClient = {
 			body: JSON.stringify(rune),
 		});
 
-		if (!response.ok)
+		if (!response.ok) {
+			const error = await response.json() as OrderDetailsError;
+			
+			if (error.details) {
+				if(error.details.errors.find(e => e.field == 'refundAddress')) {
+					return ApiErrorResponse('validation-error', { 
+						message: 'Your BTC address is not valid, please switch to Mainnet'
+					})
+				}
+
+				return ApiErrorResponse('validation-error', { 
+					message: error.details.errors.map(e => e.message).join('\n') 
+				})
+			}
+
 			return UnknownApiError
+		}
 
 		const data = await response.json() as OrderDetails;
 		return ApiOkResponse('order-details', data);

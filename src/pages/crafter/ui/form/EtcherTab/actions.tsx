@@ -39,7 +39,8 @@ interface UseOrderEstimatesQueryProps {
 export function useOrderEstimatesQuery({ formData, enabled }: UseOrderEstimatesQueryProps) {
 	return useQuery({
 		enabled,
-		queryKey: ['estimates'],
+		retry: false,
+		queryKey: ['etching-estimates', ...Object.values(formData)],
 		queryFn: async () => {
 			const order = await buildOrder(formData);
 			if (!order)

@@ -14,11 +14,23 @@ export interface RuneTransactionEstimate {
   };
 }
 
+export interface RuneTransactionEstimateError {
+  message: string,
+  details: {
+    errors: Array<{
+      field: string,
+      message: string
+    }>
+  }
+}
+
 export interface OrderDetails {
   orderId: string;
   fundAddress: string;
   fundAmount: number;
 }
+
+export type OrderDetailsError = RuneTransactionEstimateError;
 
 export interface Rune {
   feeRate: number;
