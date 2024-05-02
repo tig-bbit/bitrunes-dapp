@@ -4,18 +4,19 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Input,
 } from "~/shared/ui/common";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "~/shared/lib/utils";
 import Image from "next/image";
+import { ChevronDown } from "lucide-react";
 import { TCNCurrency } from "~/shared/types/types";
 
 interface CurrencyElement {
   currency: TCNCurrency;
   className?: string;
   key?: string;
+  select?: boolean;
 }
 
 interface CurrencySelectProps {
@@ -24,86 +25,18 @@ interface CurrencySelectProps {
   setCurrency: (value: TCNCurrency) => void;
 }
 
-export const CSupportNetworks = [
-  {
-    name: "ERC20",
-    keyValue: "eth",
-  },
-  {
-    name: "Binance Smart Chain",
-    keyValue: "bsc",
-  },
-  {
-    name: "Arbitrum",
-    keyValue: "arbitrum",
-  },
-  {
-    name: "Base",
-    keyValue: "base",
-  },
-  {
-    name: "Avalanche",
-    keyValue: "xchain",
-  },
-  {
-    name: "Avalanche (C-Chain)",
-    keyValue: "cchain",
-  },
-  {
-    name: "Polygon",
-    keyValue: "matic",
-  },
-  {
-    name: "Optimism",
-    keyValue: "op",
-  },
-  {
-    name: "Cronos",
-    keyValue: "cro",
-  },
-];
-
 export function BridgeSelectCurrency({
   currency,
   currencyList,
   setCurrency,
 }: CurrencySelectProps) {
-  const [searchText, setSearchText] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [filteredCNList, setFilterCNList] = useState<TCNCurrency[]>([]);
-  const [cNList, setCNList] = useState<TCNCurrency[]>([]);
+  const [cnList, setCNList] = useState<TCNCurrency[]>([]);
 
   const handleSelectItem = (item: TCNCurrency) => {
     setCurrency(item);
     setIsOpen(false);
   };
-
-  const onFilterCN = useCallback(async () => {
-    let _filterCNList = [];
-    const supportChains = CSupportNetworks.map((item) => item.keyValue).join(
-      ""
-    );
-    _filterCNList = cNList?.filter((item) => {
-      return (
-        item?.isFiat === false &&
-        supportChains.indexOf(item?.network || "etherum") > -1
-      );
-    });
-    if (searchText !== "") {
-      _filterCNList = _filterCNList.filter((item) => {
-        return (
-          (item?.ticker || "" + item?.name || "")
-            .toLocaleLowerCase()
-            .indexOf(searchText.toLocaleLowerCase()) > -1
-        );
-      });
-    }
-    setFilterCNList(_filterCNList);
-  }, [cNList, searchText]);
-
-  useEffect(() => {
-    onFilterCN();
-  }, [onFilterCN]);
 
   useEffect(() => {
     setCNList(currencyList);
@@ -112,22 +45,12 @@ export function BridgeSelectCurrency({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger>
-        <BridgeSelectCurrencyLabel currency={currency} />
+        <BridgeSelectCurrencyLabel currency={currency} select={true} />
       </PopoverTrigger>
       <PopoverContent>
-        <Input
-          className="px-2 py-1 mb-2 rounded-sm"
-          placeholder="Search..."
-          type="text"
-          value={searchText}
-          onChange={e => setSearchText(e.target.value)}
-        />
         <div className="flex flex-col max-h-[15rem] overflow-y-scroll">
-          {filteredCNList?.filter((item) => item?.featured)?.length > 0 && (
-            <div className="text-sm font-extralight">Popular Coins</div>
-          )}
-          {filteredCNList?.filter((item) => item?.featured)?.length > 0 &&
-            filteredCNList
+          {cnList?.length > 0 &&
+            cnList
               ?.filter((item) => item?.featured)
               ?.map((currencyItem, index) => (
                 <div
@@ -138,38 +61,6 @@ export function BridgeSelectCurrency({
                   <BridgeCurrencyLabel currency={currencyItem} />
                 </div>
               ))}
-          {filteredCNList?.filter((item) => item?.isStable && !item?.featured)
-            ?.length > 0 && (
-            <div className="text-sm font-extralight">Stable Coins</div>
-          )}
-          {filteredCNList?.filter((item) => item?.isStable && !item?.featured)
-            ?.length > 0 &&
-            filteredCNList
-              ?.filter((item) => item?.isStable && !item?.featured)
-              ?.map((currencyItem, index) => (
-                <div
-                  onClick={() => handleSelectItem(currencyItem)}
-                  className="w-full hover:cursor-pointer hover:backdrop-blur-lg rounded-md p-2"
-                  key={index}
-                >
-                  <BridgeCurrencyLabel currency={currencyItem} />
-                </div>
-              ))}
-          {filteredCNList?.filter((item) => !item?.isStable && !item?.featured)
-            ?.length > 0 && (
-            <div className="text-sm font-extralight">DeFi Tokens</div>
-          )}
-          {filteredCNList
-            ?.filter((item) => !item?.isStable && !item?.featured)
-            ?.map((currencyItem, index) => (
-              <div
-                onClick={() => handleSelectItem(currencyItem)}
-                className="w-full hover:cursor-pointer hover:backdrop-blur-lg rounded-md p-2"
-                key={index}
-              >
-                <BridgeCurrencyLabel currency={currencyItem} />
-              </div>
-            ))}
         </div>
       </PopoverContent>
     </Popover>
@@ -197,6 +88,7 @@ export function BridgeCurrencyLabel({ currency, className }: CurrencyElement) {
 export function BridgeSelectCurrencyLabel({
   currency,
   className,
+  select
 }: CurrencyElement) {
   return (
     <div className={cn("flex items-center gap-[.5rem]", className)}>
@@ -208,6 +100,7 @@ export function BridgeSelectCurrencyLabel({
         height={8}
       />
       <span className="uppercase">{currency?.ticker || ""}</span>
+      {select && <ChevronDown className="ml-1 w-4" />}
     </div>
   );
 }

@@ -14,6 +14,7 @@ import { TCNCurrency } from "~/shared/types/types";
 import { useConnect } from "~/app/_providers/wallet-provider";
 import { useBtcWallet } from "~/shared/lib/bitcoin";
 import { cn } from "~/shared/lib/utils";
+import { useDebounce } from "~/shared/lib/debounce";
 
 interface BridgeToProps {
   switchBridge: boolean;
@@ -67,11 +68,13 @@ export function BridgeTo(props: BridgeToProps) {
     setWalletAddress(ordinalsAddress as string);
   };
 
+  const debounceAmount = useDebounce((amount: string) => changeAmount(parseFloat(amount)), 200);
+
   const catchChangeAmount = async (inputValue: string) => {
     const fromAmount =
       parseFloat(inputValue) >= 1 ? inputValue.replace(/^0+/, "") : inputValue;
     setAmount(fromAmount);
-    setTimeout(() => changeAmount(parseFloat(fromAmount)), 200);
+    debounceAmount(fromAmount);
   };
 
   const handleChangeAmount = async (

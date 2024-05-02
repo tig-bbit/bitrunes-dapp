@@ -3,12 +3,12 @@
 import { Button, Form } from "~/shared/ui/common";
 import { useForm } from "react-hook-form";
 import { Icons } from "~/shared/ui/icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { BridgeTo } from "./BridgeTo";
 import { BridgeFrom } from "./BridgeFrom";
 import { useEffect, useState } from "react";
 import {
-  fetchCurrencyList,
+  // createTransaction,
   fetchEstimateAmount,
   fetchMinimalExchange,
 } from "../api/change-now";
@@ -61,19 +61,62 @@ const defaultBridgeForm = {
   },
 };
 
+const CurrencyList = [
+  {
+    "ticker": "usdt",
+    "name": "Tether (ERC20)",
+    "image": "https://content-api.changenow.io/uploads/usdterc20_5ae21618aa.svg",
+    "hasExternalId": false,
+    "isFiat": false,
+    "featured": true,
+    "isStable": true,
+    "supportsFixedRate": true,
+    "network": "eth",
+    "tokenContract": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    "buy": true,
+    "sell": true,
+    "legacyTicker": "usdterc20"
+  },
+  {
+    "ticker": "eth",
+    "name": "Ethereum",
+    "image": "https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg",
+    "hasExternalId": false,
+    "isFiat": false,
+    "featured": true,
+    "isStable": false,
+    "supportsFixedRate": true,
+    "network": "eth",
+    "tokenContract": null,
+    "buy": true,
+    "sell": true,
+    "legacyTicker": "eth"
+  },
+]
+
 type TCNValue = {
   minimalAmount: number;
   estimateAmount: number;
-  payOutAddress: string;
   error: string;
 };
 
 const defaultCNValue = {
   minimalAmount: 0,
   estimateAmount: 0,
-  payOutAddress: "",
   error: "",
 };
+
+// type TTXValue = {
+//   payOutAddress: string;
+//   txId: string;
+//   status: string;
+// }
+
+// const defaultTxValue = {
+//   payOutAddress: "",
+//   txId: "",
+//   status: ""
+// }
 
 export function BridgeForm() {
   const form = useForm();
@@ -81,15 +124,11 @@ export function BridgeForm() {
   const [switchBridge, setSwitchBridge] = useState<boolean>(true);
   const [formValue, setFormValue] = useState<TBridgeForm>(defaultBridgeForm);
   const [cnValue, setCNValue] = useState<TCNValue>(defaultCNValue);
+  // const [txValue, setTxValue] = useState<TTXValue>(defaultTxValue)
 
   const handleChangeBridge = () => {
     setSwitchBridge(!switchBridge);
   };
-
-  const { data: currencyList } = useQuery({
-    queryKey: ["currency-info"],
-    queryFn: fetchCurrencyList,
-  });
 
   const minimalMutate = useMutation({
     mutationKey: ["minimal-exchange-amount"],
@@ -101,8 +140,18 @@ export function BridgeForm() {
     mutationFn: fetchEstimateAmount,
   });
 
+  // const createTxMutate = useMutation({
+  //   mutationKey: ["create-exchange-transaction"],
+  //   mutationFn: createTransaction,
+  // });
+
   const onSubmit = form.handleSubmit(async data => {
-    console.log(data)
+    try {
+      // const exchangeTx = await createTxMutate.mutateAsync(formValue.fromCurrency,formValue.toCurrency, )
+      console.log(data)
+    } catch (error) {
+
+    }
   });
 
   const catchChangeFromAmount = async (fromAmount: number) => {
@@ -198,7 +247,7 @@ export function BridgeForm() {
 
   useEffect(() => {
     catchChangeTicker();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValue.fromCurrency?.legacyTicker]);
 
   return (
@@ -210,7 +259,7 @@ export function BridgeForm() {
               {switchBridge ? (
                 <BridgeFrom
                   switchBridge={switchBridge}
-                  currencyList={currencyList}
+                  currencyList={CurrencyList}
                   currency={formValue.fromCurrency}
                   setAmount={(value: string) =>
                     setFormValue((prev) => ({ ...prev, fromAmount: value }))
@@ -265,7 +314,7 @@ export function BridgeForm() {
               ) : (
                 <BridgeFrom
                   switchBridge={switchBridge}
-                  currencyList={currencyList}
+                  currencyList={CurrencyList}
                   currency={formValue.fromCurrency}
                   setCurrency={(value: TCNCurrency) =>
                     setFormValue((prev) => ({ ...prev, fromCurrency: value }))
