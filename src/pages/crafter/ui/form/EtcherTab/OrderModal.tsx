@@ -19,7 +19,7 @@ import {
 } from './actions';
 import { isAppError } from "../AppError";
 
-import { ComponentPropsWithoutRef, useState } from 'react';
+import { ComponentPropsWithoutRef, useEffect, useState } from 'react';
 import { SchemaType } from './validation';
 import { useGasFees } from '~/shared/lib/bitcoin';
 import { OrderDetails } from '~/shared/lib/bitcoin/types';
@@ -29,10 +29,11 @@ interface OrderModalProps extends ComponentPropsWithoutRef<typeof Dialog> {
 	formData: SchemaType
 }
 
-export function OrderModal({ formData, ...props }: OrderModalProps) {
+export function OrderModal({ formData, open, ...props }: OrderModalProps) {
 	const { toast } = useToast();
 	const { data: fees } = useGasFees();
-	const { data: estimates } = useOrderEstimatesQuery({ formData, enabled: props?.open })
+	const { data: estimates, error } = useOrderEstimatesQuery({ formData, enabled: open })
+	const [isEstimatesReceived, setIsEstimatesReceived] = useState(false);
 
 	const {
 		mutateAsync: createOrder,
@@ -45,6 +46,19 @@ export function OrderModal({ formData, ...props }: OrderModalProps) {
 	} = useExecuteOrderAction();
 
 	const [order, setOrder] = useState<OrderDetails | null>(null);
+
+	useEffect(() => {
+		if (isAppError(error)) {
+			toast({
+				variant: 'error', title: 'Error',
+				description: error.message
+			})
+		}
+	}, [toast, error])
+
+	useEffect(() => {
+		setIsEstimatesReceived(!!estimates);
+	}, [estimates])
 
 	const handleCreateOrderClick = async () => {
 		try {
@@ -89,7 +103,7 @@ export function OrderModal({ formData, ...props }: OrderModalProps) {
 
 	if (order) {
 		return (
-			<Dialog {...props}>
+			<Dialog {...props} open={open}>
 				<DialogContent>
 					<DialogHeader>
 						<DialogTitle>Order details</DialogTitle>
@@ -125,7 +139,7 @@ export function OrderModal({ formData, ...props }: OrderModalProps) {
 	}
 
 	return (
-		<Dialog {...props}>
+		<Dialog {...props} open={open && isEstimatesReceived}>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Estimates</DialogTitle>
