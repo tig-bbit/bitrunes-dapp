@@ -1,17 +1,17 @@
 {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "next/core-web-vitals",
-      "plugin:@typescript-eslint/recommended"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "sourceType": "module",
-      "project": "./tsconfig.json"
-    },
-    "rules": {
-      "@typescript-eslint/no-explicit-any": "error",
-      "@typescript-eslint/no-unused-vars": "error"
-    }
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@next/next/no-document-import-in-page": 0
   }
-  
+}
