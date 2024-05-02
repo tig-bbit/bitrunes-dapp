@@ -1,7 +1,6 @@
 import axios from "axios";
 import {
   CHANGE_NOW_API_KEY,
-  CHANGE_NOW_PRIVATE_API_KEY,
 } from "~/shared/config/change-now";
 import { TCNCurrency } from "~/shared/types/types";
 
@@ -101,7 +100,7 @@ export const createTransaction = async ({
   try {
     const response = await axios.post("https://api.changenow.io/v2/exchange", {
       headers: {
-        "x-api-key": CHANGE_NOW_PRIVATE_API_KEY,
+        "x-changenow-api-key": CHANGE_NOW_API_KEY,
         "Content-Type": "application/json",
       },
       body: {
