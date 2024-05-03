@@ -2,7 +2,6 @@
 
 import { PropsWithChildren} from "react";
 import { cn } from "~/shared/lib/utils";
-import { ComingSoonModal } from "./ComingSoonModal";
 import { Header } from "./Header";
 
 export function Page({ children }: PropsWithChildren) {
@@ -17,7 +16,6 @@ export function Page({ children }: PropsWithChildren) {
 				<div className='grow'>
 					{children}
 				</div>
-				<ComingSoonModal />
 			</>
 		</main >
 	);
